@@ -1,0 +1,15 @@
+depends: global
+db:
+  host: 127.0.0.1
+  port: 5432
+  name: gost
+  user: gost
+  password: gost
+rabbit:
+  servers:
+    local:
+      host: 127.0.0.1
+      vhost: vgost
+      port: 5672
+      user: gost
+      password: gost
