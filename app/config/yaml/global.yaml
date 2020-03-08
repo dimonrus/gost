@@ -1,0 +1,42 @@
+depends:
+project:
+  name: gost
+  debug: true
+web:
+  port: 8080
+  host: 0.0.0.0
+  url: http://localhost
+  timeout:
+    read: 60
+    write: 60
+    idle: 60
+db:
+  maxConnections: 50
+  connectionIdleLifetime: 15
+rabbit:
+  queues:
+    golkp.test:
+      exchange: amq.direct
+      type: direct
+      routingKey:
+        - golkp-test-message
+      durable: true
+arguments:
+  app:
+    type: string
+    label: application type
+  name:
+    type: string
+    label: name of script
+  file:
+    type: string
+    label: name of file
+  class:
+    type: string
+    label: type of entity
+  queue:
+    type: string
+    label: name of the queue
+  server:
+    type: string
+    label: name of the server
