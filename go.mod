@@ -4,7 +4,7 @@ go 1.14
 
 require (
 	github.com/dimonrus/gocli v0.5.0
-	github.com/dimonrus/godb v1.7.5
+	github.com/dimonrus/godb v1.7.6
 	github.com/dimonrus/gohelp v0.3.0
 	github.com/dimonrus/gorabbit v1.2.3
 	github.com/dimonrus/gorest v0.7.3

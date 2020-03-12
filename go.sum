@@ -1,12 +1,10 @@
 github.com/dimonrus/gocli v0.3.1/go.mod h1:aTZ7+TKbSKueFuCWgvZ3kviaCO0qMog2fSOnG0nFBWE=
 github.com/dimonrus/gocli v0.5.0 h1:Sx2pweK6jFDj2fJAPrm3zV++YO87DrdGI8G6n+cOdEA=
 github.com/dimonrus/gocli v0.5.0/go.mod h1:OasT9tc6A9QRHtxe/ozpu3RWWMegc2YmRG0iBb1pqkM=
-github.com/dimonrus/godb v1.7.5 h1:RwKqzUeI5ioocOj3Mkjqt3s/9q2L9ofjV1fkHX1O7NY=
-github.com/dimonrus/godb v1.7.5/go.mod h1:fau0wvitZJRoT6d3VXmFNScOpqWwMYnHDGRUOH7SepE=
+github.com/dimonrus/godb v1.7.6 h1:WK0/7vDd8lX421BODyto8vEwOTkG888xEaE9+YfHk8A=
+github.com/dimonrus/godb v1.7.6/go.mod h1:fau0wvitZJRoT6d3VXmFNScOpqWwMYnHDGRUOH7SepE=
 github.com/dimonrus/gohelp v0.3.0 h1:G+BMO4hlzr+wdfVBnVbknXfgcDkz75AZGpbfbeS6Q34=
 github.com/dimonrus/gohelp v0.3.0/go.mod h1:+dOOHmnzKauApxlx1kn/sHAYds3gPvMvXLpeLtBq82E=
-github.com/dimonrus/gorabbit v1.2.2 h1:lJyoWsyKISNLOiK1PGW1v453xjf3SIQ9igWRgZi36tM=
-github.com/dimonrus/gorabbit v1.2.2/go.mod h1:PMnbfYq0kTkKRWOqTmjtNXDsUTBa22Iq1lV3ZJrX7v0=
 github.com/dimonrus/gorabbit v1.2.3 h1:noXrBTXH93CEuatSc8MhZBmcMruvZSM7sDfFfQm+GMU=
 github.com/dimonrus/gorabbit v1.2.3/go.mod h1:PMnbfYq0kTkKRWOqTmjtNXDsUTBa22Iq1lV3ZJrX7v0=
 github.com/dimonrus/gorest v0.7.3 h1:mvRPzDUouNB7yxelqvFS//t9emBLFc5Qq7AEbjNOr+A=
