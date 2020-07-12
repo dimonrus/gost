@@ -1,5 +1,5 @@
 # GO Images https://hub.docker.com/_/golang/
-FROM golang:1.14-alpine3.11 AS build
+FROM golang:1.14.4-alpine3.12 AS build
 # Install GIT
 RUN apk add --no-cache git
 # Work directory

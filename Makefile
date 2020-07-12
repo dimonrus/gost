@@ -30,7 +30,6 @@ docker-cron:
 
 # Run cron image
 docker-cron-run:
-	make docker-build
 	docker run --rm --env-file="etc/env/.local" --name cron $(REGISTRY)/$(PROJECT)/cron:$(TAG)
 
 # Build test image
