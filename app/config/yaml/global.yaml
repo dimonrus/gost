@@ -11,6 +11,7 @@ web:
     write: 60
     idle: 60
 db:
+  sslMode: disable
   maxConnections: 50
   connectionIdleLifetime: 15
 rabbit:
