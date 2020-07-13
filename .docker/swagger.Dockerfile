@@ -11,4 +11,4 @@ RUN chmod +x /swagger
 # Set up workdir
 WORKDIR /go/src/gost/
 # Generate spec
-RUN /swagger generate spec -m -o /swagger.json
+RUN /swagger generate spec -m -o resource/swagger.json
