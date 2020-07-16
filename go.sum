@@ -10,8 +10,8 @@ github.com/dimonrus/gohelp v0.3.2 h1:qcu1kL6ooOFz+KLYDJJH6ZZCzDqw2jG8xVGRZ2u6URQ
 github.com/dimonrus/gohelp v0.3.2/go.mod h1:+dOOHmnzKauApxlx1kn/sHAYds3gPvMvXLpeLtBq82E=
 github.com/dimonrus/gorabbit v1.2.5 h1:TwG0grui/d6ofCf7tbdyy1ziumfoCSuUZf77kKFHVCo=
 github.com/dimonrus/gorabbit v1.2.5/go.mod h1:3ll30z+oAdZe3JtpNkSt4s98CoZc5onAvHsObUoWaUU=
-github.com/dimonrus/gorest v0.8.0 h1:Ykaqjdoa8mAYCBxpZSyQdJL5/WOs4tLyYQsMXS6Gxjk=
-github.com/dimonrus/gorest v0.8.0/go.mod h1:j7YYQ9qd7Whd10X/fAAQsH8xdakdbjGHfDUlGZ/KZjQ=
+github.com/dimonrus/gorest v0.8.1 h1:E7lDOE2RFiCn8c/AkmaW32azj89ToYYo5YLMVpYphcA=
+github.com/dimonrus/gorest v0.8.1/go.mod h1:j7YYQ9qd7Whd10X/fAAQsH8xdakdbjGHfDUlGZ/KZjQ=
 github.com/dimonrus/goweb v1.2.0 h1:nuC7MU47bjjRqXDfZC0vRXF41RJtH8Nv4KhcpLZxY8I=
 github.com/dimonrus/goweb v1.2.0/go.mod h1:z3dZUPUjDWy2/ShqPqQlcl/NufR/nA9kHPf3MgvCfpY=
 github.com/dimonrus/porterr v1.7.0 h1:3BUcnauukI1aKRIRR73MmL7hIE1TkmsJmWarvKJBaU4=
