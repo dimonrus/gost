@@ -26,7 +26,7 @@ docker-api-run:
 
 # Build cron image
 docker-cron:
-	docker build -t $(REGISTRY)/$(PROJECT)/cron:$(TAG) --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/cron.Dockerfile .
+	docker build --no-cache -t $(REGISTRY)/$(PROJECT)/cron:$(TAG) --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/cron.Dockerfile .
 
 # Run cron image
 docker-cron-run:

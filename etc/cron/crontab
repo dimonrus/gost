@@ -1,1 +1,1 @@
-* * * * * /gost/gost -app=script -name=test
+* * * * * sh /variables.sh && /gost/gost -app=script -name=test
