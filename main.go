@@ -24,6 +24,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"github.com/dimonrus/gocli"
 	"github.com/dimonrus/gorabbit"
 	"github.com/dimonrus/porterr"
@@ -53,11 +54,11 @@ func main() {
 			base.App.FatalError(errors.New("no script name specified"))
 		}
 		scriptName := name.GetString()
-		base.App.GetLogger().Infof("Start script: %s", scriptName)
 		if callback, ok := base.App.GetScripts()[scriptName]; ok {
+			base.App.SuccessMessage(fmt.Sprintf("Start script: %s", scriptName))
 			callback(arguments)
 		} else {
-			base.App.GetLogger().Warnf("script file %s.go not found", scriptName)
+			base.App.FailMessage(fmt.Sprintf("Script file %s.go not found", scriptName))
 		}
 	case ApplicationTypeConsumer:
 		c := gorabbit.CommandConsumer + " " + gorabbit.CommandStart + " " + gorabbit.CommandKeyWordAll

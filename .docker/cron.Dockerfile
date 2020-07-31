@@ -9,7 +9,7 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 # Copy bin file
 COPY --from=build /go/src/gost/gost /gost/
 # Copy etc files
-COPY --from=build /go/src/gost/etc /
+COPY ./etc /
 # Copy configs
 COPY --from=build /go/src/gost/app/config/yaml /gost/app/config/yaml
 # Copy resource

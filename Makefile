@@ -6,19 +6,24 @@ REGISTRY = gost.com/golang
 docker-prune:
 	docker system prune -a
 
+# Download golang image
+docker-go:
+	docker build -t $(REGISTRY)/$(PROJECT)/golang -f .docker/golang.Dockerfile .
+
 # Build main image
 docker-build:
-	docker build -t $(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/build.Dockerfile .
+	make docker-go
+	docker build --no-cache -t $(REGISTRY)/$(PROJECT)/build:$(TAG) --build-arg image=$(REGISTRY)/$(PROJECT)/golang -f .docker/build.Dockerfile .
 
 # Build API image
 docker-api:
 	make docker-swagger
-	docker build -t $(REGISTRY)/$(PROJECT)/api:$(TAG) --build-arg image=$(REGISTRY)/$(PROJECT)/swagger -f .docker/api.Dockerfile .
+	docker build --no-cache -t $(REGISTRY)/$(PROJECT)/api:$(TAG) --build-arg image=$(REGISTRY)/$(PROJECT)/swagger -f .docker/api.Dockerfile .
 
 # Build swagger image
 docker-swagger:
 	make docker-build
-	docker build -t $(REGISTRY)/$(PROJECT)/swagger --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/swagger.Dockerfile .
+	docker build --no-cache -t $(REGISTRY)/$(PROJECT)/swagger --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/swagger.Dockerfile .
 
 # Run api image
 docker-api-run:
@@ -26,6 +31,7 @@ docker-api-run:
 
 # Build cron image
 docker-cron:
+	make docker-build
 	docker build --no-cache -t $(REGISTRY)/$(PROJECT)/cron:$(TAG) --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/cron.Dockerfile .
 
 # Run cron image
@@ -52,7 +58,7 @@ docker-migrate:
 # Build consumer image
 docker-consumer:
 	make docker-build
-	docker build -t $(REGISTRY)/$(PROJECT)/consumer:$(TAG) --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/consumer.Dockerfile .
+	docker build --no-cache -t $(REGISTRY)/$(PROJECT)/consumer:$(TAG) --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/consumer.Dockerfile .
 
 # Run consumer image
 docker-consumer-run:
