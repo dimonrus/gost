@@ -16,6 +16,6 @@ type Config struct {
 }
 
 type ProjectConfig struct {
-	Name        string
-	Debug       bool
+	Name  string
+	Debug bool
 }

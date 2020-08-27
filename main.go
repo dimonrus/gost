@@ -50,7 +50,7 @@ func main() {
 	case ApplicationTypeScript:
 		arguments := base.App.GetConfig().Arguments
 		name, ok := arguments["name"]
-		if ok != true {
+		if !ok {
 			base.App.FatalError(errors.New("no script name specified"))
 		}
 		scriptName := name.GetString()

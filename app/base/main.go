@@ -55,7 +55,7 @@ func (app *Application) GetConfig() config.Config {
 func (app *Application) GetAppType() string {
 	cfg := app.GetConfig()
 	appType, ok := cfg.Arguments["app"]
-	if ok != true {
+	if !ok {
 		app.FatalError(errors.New("app type is not presents"))
 	}
 	return appType.GetString()
@@ -104,7 +104,7 @@ func (app *Application) GetWeb() *goweb.Application {
 // Get migration
 func (app *Application) GetMigration() *godb.Migration {
 	if app.migration == nil {
-		registry := make(godb.MigrationRegistry, 0)
+		registry := make(godb.MigrationRegistry)
 		app.migration = &godb.Migration{
 			RegistryPath:  "gost/app/base",
 			MigrationPath: "app/io/db/migrations",
@@ -156,7 +156,6 @@ func (app *Application) EndTransaction(q *godb.SqlTx, e porterr.IError) {
 	if err != nil {
 		app.FatalError(err)
 	}
-	return
 }
 
 // Get absolute path to application
