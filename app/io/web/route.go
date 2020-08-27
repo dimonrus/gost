@@ -111,5 +111,4 @@ func notAllowed(w http.ResponseWriter, r *http.Request) {
 	}
 	e := porterr.New(porterr.PortErrorHandler, "Requested method is not allowed. Check it").HTTP(http.StatusMethodNotAllowed)
 	gorest.Send(w, gorest.NewErrorJsonResponse(e))
-	return
 }
