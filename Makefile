@@ -112,11 +112,11 @@ script-migrate:
 	
 # Download swagger for mac
 swagger-mac:
-	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.22.0/swagger_darwin_amd64 && chmod +x swagger
+	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.25.0/swagger_darwin_amd64 && chmod +x swagger
 
 # Download swagger for linux
 swagger-lin:
-	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.22.0/swagger_linux_amd64 && chmod +x swagger
+	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.25.0/swagger_linux_amd64 && chmod +x swagger
 
 # Generate swagger sec
 swagger-spec:

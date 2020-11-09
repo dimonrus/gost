@@ -10,9 +10,66 @@ import (
 	"net/http"
 )
 
+// JSON Answer. Common error response
+//
+// swagger:response ResponseError
+type ResponseError struct {
+	// In: body
+	Body struct {
+		// Error
+		// Required: true
+		Error porterr.PortError `json:"error"`
+	}
+}
+
+// Common message response
+//
+// swagger:response ResponseMessage
+type ResponseMessage struct {
+	// In: body
+	Body struct {
+		// System message
+		// Required: true
+		// Example: Success
+		Message string `json:"message,omitempty"`
+	}
+}
+
+// Memory usage response
+//
+// swagger:response ResponseMemoryUsage
+type ResponseMemoryUsage struct {
+	// In: body
+	Body struct {
+		// Message
+		// Required: true
+		// Example: Memory usage
+		Message string `json:"message,omitempty"`
+		// Memory usage data
+		// Required: true
+		Data struct {
+			// Allocated memory
+			// Required: true
+			// Example: 100 KB
+			Allocated string `json:"allocated,omitempty"`
+			// Total allocated
+			// Required: true
+			// Example: 300 KB
+			TotalAllocated string `json:"total_allocated,omitempty"`
+			// System allocated memory
+			// Required: true
+			// Example: 200 KB
+			System string `json:"system,omitempty"`
+			// Count of GC cycle
+			// Required: true
+			// Example: 1
+			GarbageCollectors string `json:"garbage_collectors,omitempty"`
+		} `json:"data"`
+	}
+}
+
 // Get routes
 func GetRoutes() *mux.Router {
-
 	middleWare := goweb.NewMiddlewareCollection(base.App.GetConfig().Web, base.App.Application, -1)
 
 	routes := mux.NewRouter()
@@ -22,62 +79,8 @@ func GetRoutes() *mux.Router {
 	// Api routes
 	ApiRoute := MainRoute.PathPrefix("/api").Subrouter()
 
-	// SystemRoute
-	SystemRoute := ApiRoute.PathPrefix("/system").Subrouter()
-	// swagger:route GET /system/health system HealthCheckHandler
-	//
-	// System. Health check
-	//
-	// This will show information about health of service.
-	//
-	//     Consumes:
-	//     - application/json
-	//
-	//     Produces:
-	//     - application/json
-	//
-	//     Schemes: https
-	//
-	//     Responses:
-	//       200: ResponseMessage
-	SystemRoute.HandleFunc("/health", system.HealthCheckHandler).Methods(http.MethodGet)
-	// swagger:route GET /system/health-db system HealthDB
-	//
-	// System. Health check for db
-	//
-	// This will show information about health of db.
-	//
-	//     Consumes:
-	//     - application/json
-	//
-	//     Produces:
-	//     - application/json
-	//
-	//     Schemes: https
-	//
-	//     Responses:
-	//       200: ResponseMessage
-	//       500: ResponseError
-	SystemRoute.HandleFunc("/health-db", system.HealthDB).Methods(http.MethodGet)
-	// swagger:route GET /system/memory system MemoryUsage
-	//
-	// System. Memory usage
-	//
-	// This will show information about memory of service.
-	//
-	//     Consumes:
-	//     - application/json
-	//
-	//     Produces:
-	//     - application/json
-	//
-	//     Schemes: https
-	//
-	//     Responses:
-	//       200: ResponseMemoryUsage
-	SystemRoute.HandleFunc("/memory", system.MemoryUsage).Methods(http.MethodGet)
-	// Swagger
-	SystemRoute.HandleFunc("/swagger", system.Swagger).Methods(http.MethodGet)
+	// System sub route
+	system.Init(ApiRoute)
 
 	// Setup middleware
 	routes.Use(middleWare.LoggingMiddleware)
