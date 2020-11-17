@@ -1,8 +1,8 @@
 github.com/dimonrus/gocli v0.6.0/go.mod h1:OasT9tc6A9QRHtxe/ozpu3RWWMegc2YmRG0iBb1pqkM=
 github.com/dimonrus/gocli v0.7.1 h1:J2eI4r0nXYx5+7+motzg6zLJ9uqGESrZfV+Zc1ZFAdE=
 github.com/dimonrus/gocli v0.7.1/go.mod h1:dKr1LXCWx6jQXVze73SXL0f9s3EGQqhOkSE9hh3fRJs=
-github.com/dimonrus/godb v1.9.10 h1:5WJNjvrqAFXi/4yzBPb1ayN1Kf7Vb6LLsi/BzlUd1nw=
-github.com/dimonrus/godb v1.9.10/go.mod h1:bFEL1b7qUgJbpbg4iR44Dy4Qrtk6Zw3HTn8oAJQ8+jg=
+github.com/dimonrus/godb v1.9.14 h1:aOgkBuXJ8Teoosk6vCDZDlWjDiuBxVnbqXq1uknvy7w=
+github.com/dimonrus/godb v1.9.14/go.mod h1:bFEL1b7qUgJbpbg4iR44Dy4Qrtk6Zw3HTn8oAJQ8+jg=
 github.com/dimonrus/gohelp v0.3.0/go.mod h1:+dOOHmnzKauApxlx1kn/sHAYds3gPvMvXLpeLtBq82E=
 github.com/dimonrus/gohelp v0.4.0 h1:4EPgmMGuGfddFP0YK/D67B1RH362aHBOHCmj7r1PTSU=
 github.com/dimonrus/gohelp v0.4.0/go.mod h1:+dOOHmnzKauApxlx1kn/sHAYds3gPvMvXLpeLtBq82E=
