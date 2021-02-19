@@ -3,7 +3,7 @@ All business feature should be implemented in 'app/core' folder as single entry 
 Each IO(api, consumers, scripts) should contain call the 'app/core' methods to prevent cycled import
 
 ## Makefile description
-Project have a make file that allows to create docker container and helps build different aps such as
+Project has a make file that allows to create docker container and helps build different aps such as
 api, cron, consumers, single script calls
 
 # Project commands
