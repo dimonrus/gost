@@ -1,7 +1,7 @@
 github.com/dimonrus/gocli v0.8.1 h1:fdm2UxXIjoBIOgvaHowJW58mOpnhJi68w2CCeav8gPE=
 github.com/dimonrus/gocli v0.8.1/go.mod h1:dKr1LXCWx6jQXVze73SXL0f9s3EGQqhOkSE9hh3fRJs=
-github.com/dimonrus/godb v1.9.15 h1:oIMvSlLdcxMeutqOj2pBzzj0lXeTM7JdpGHyYYlL+IQ=
-github.com/dimonrus/godb v1.9.15/go.mod h1:bFEL1b7qUgJbpbg4iR44Dy4Qrtk6Zw3HTn8oAJQ8+jg=
+github.com/dimonrus/godb v1.9.17 h1:RqVDQuVg3QIGEConRzMb5bYWcG8kjej+7I+3Tuhm45g=
+github.com/dimonrus/godb v1.9.17/go.mod h1:R4sa+kLsM75JkvFjHCD/Z6j35Hv3/2GAzfh0OL/hEM4=
 github.com/dimonrus/gohelp v0.4.0 h1:4EPgmMGuGfddFP0YK/D67B1RH362aHBOHCmj7r1PTSU=
 github.com/dimonrus/gohelp v0.4.0/go.mod h1:+dOOHmnzKauApxlx1kn/sHAYds3gPvMvXLpeLtBq82E=
 github.com/dimonrus/gorabbit v1.3.2 h1:yjcEoBfF+NLElNQ+cM9cUD+yFGYe/l9E3Y1UaEKoxY0=
@@ -11,12 +11,12 @@ github.com/dimonrus/gorest v0.8.1 h1:E7lDOE2RFiCn8c/AkmaW32azj89ToYYo5YLMVpYphcA
 github.com/dimonrus/gorest v0.8.1/go.mod h1:j7YYQ9qd7Whd10X/fAAQsH8xdakdbjGHfDUlGZ/KZjQ=
 github.com/dimonrus/goweb v1.2.5 h1:cnk1bKyhpcbOHvpYxpAilsaDTTwUtfQumwKxHQrXb6c=
 github.com/dimonrus/goweb v1.2.5/go.mod h1:FC4o+7XqwHPa8C0spM5FLTTwGjvZ24HysE5irGcbV4M=
-github.com/dimonrus/porterr v1.7.0 h1:3BUcnauukI1aKRIRR73MmL7hIE1TkmsJmWarvKJBaU4=
 github.com/dimonrus/porterr v1.7.0/go.mod h1:BCVpaUyYdawPPzeAa8yjCYvemctND1I9ER/nFnOyDgQ=
+github.com/dimonrus/porterr v1.8.0/go.mod h1:BCVpaUyYdawPPzeAa8yjCYvemctND1I9ER/nFnOyDgQ=
+github.com/dimonrus/porterr v1.9.0 h1:N8dEF9TrcNyMrQOyBUb1ein+1PXboLuycwFLjG2pEwM=
+github.com/dimonrus/porterr v1.9.0/go.mod h1:BCVpaUyYdawPPzeAa8yjCYvemctND1I9ER/nFnOyDgQ=
 github.com/gorilla/mux v1.7.4 h1:VuZ8uybHlWmqV03+zRzdwKL4tUnIp1MAQtp1mIFE1bc=
 github.com/gorilla/mux v1.7.4/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=
-github.com/lib/pq v1.8.0 h1:9xohqzkUwzR4Ga4ivdTcawVS89YSDVxXMa3xJX3cGzg=
-github.com/lib/pq v1.8.0/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
 github.com/lib/pq v1.9.0 h1:L8nSXQQzAYByakOFMTwpjRoHsMJklur4Gi59b6VivR8=
 github.com/lib/pq v1.9.0/go.mod h1:AlVN5x4E4T544tWzH6hKfbfQvm3HdbOxrmggDNAPY9o=
 github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71 h1:2MR0pKUzlP3SGgj5NYJe/zRYDwOu9ku6YHy+Iw7l5DM=
