@@ -16,12 +16,11 @@ import (
 	"path/filepath"
 )
 
-// The Application
 var (
 	App *Application
 )
 
-// Application
+// Application Application struct
 type Application struct {
 	gocli.Application
 	baseDb         *godb.DBO
@@ -32,12 +31,7 @@ type Application struct {
 	scripts        map[string]func(app gocli.Arguments)
 }
 
-// Get logger
-func (app *Application) GetLogger() gocli.Logger {
-	return app.Application.GetLogger(gocli.LogLevelDebug)
-}
-
-// Get tcp connections
+// GetTcpConnections Get tcp connections
 func (app *Application) GetTcpConnections() *goweb.Connections {
 	if app.tcpConnections == nil {
 		app.tcpConnections = goweb.NewConnections()
@@ -45,13 +39,13 @@ func (app *Application) GetTcpConnections() *goweb.Connections {
 	return app.tcpConnections
 }
 
-// Get config
+// GetConfig Get app config
 func (app *Application) GetConfig() config.Config {
 	cfg := app.Application.GetConfig().(*config.Config)
 	return *cfg
 }
 
-// Get application type
+// GetAppType Get application type
 func (app *Application) GetAppType() string {
 	cfg := app.GetConfig()
 	appType, ok := cfg.Arguments["app"]
@@ -61,7 +55,7 @@ func (app *Application) GetAppType() string {
 	return appType.GetString()
 }
 
-// Get DB Connection
+// GetDB Get DB Connection
 func (app *Application) GetDB() *godb.DBO {
 	if app.baseDb != nil {
 		return app.baseDb
@@ -84,7 +78,7 @@ func (app *Application) GetDB() *godb.DBO {
 	return app.baseDb
 }
 
-// Get rabbit app
+// GetRabbit Get rabbit app
 func (app *Application) GetRabbit() *gorabbit.Application {
 	if app.rabbit == nil {
 		app.rabbit = gorabbit.NewApplication(App.GetConfig().Rabbit, app.Application)
@@ -93,7 +87,7 @@ func (app *Application) GetRabbit() *gorabbit.Application {
 	return app.rabbit
 }
 
-// Get web app
+// GetWeb Get web app
 func (app *Application) GetWeb() *goweb.Application {
 	if app.web == nil {
 		app.web = goweb.NewApplication(App.GetConfig().Web, app.Application, nil)
@@ -101,7 +95,7 @@ func (app *Application) GetWeb() *goweb.Application {
 	return app.web
 }
 
-// Get migration
+// GetMigration Get migration
 func (app *Application) GetMigration() *godb.Migration {
 	if app.migration == nil {
 		registry := make(godb.MigrationRegistry)
@@ -117,7 +111,7 @@ func (app *Application) GetMigration() *godb.Migration {
 	return app.migration
 }
 
-// Connection State Listener
+// ConnStateEvent Connection State Listener
 func (app *Application) ConnStateEvent(conn net.Conn, event http.ConnState) {
 	id := goweb.ConnectionIdentifier(conn.RemoteAddr().String())
 	if event == http.StateActive {
@@ -127,7 +121,7 @@ func (app *Application) ConnStateEvent(conn net.Conn, event http.ConnState) {
 	}
 }
 
-// Get Script callback
+// GetScripts Get Script callback
 func (app *Application) GetScripts() map[string]func(app gocli.Arguments) {
 	if app.scripts == nil {
 		app.scripts = make(map[string]func(app gocli.Arguments))
@@ -135,7 +129,7 @@ func (app *Application) GetScripts() map[string]func(app gocli.Arguments) {
 	return app.scripts
 }
 
-// Begin transaction
+// StartTransaction Begin transaction
 func (app *Application) StartTransaction() *godb.SqlTx {
 	tx, err := app.GetDB().Begin()
 	if err != nil {
@@ -145,7 +139,7 @@ func (app *Application) StartTransaction() *godb.SqlTx {
 	return tx
 }
 
-// End transaction
+// EndTransaction End transaction
 func (app *Application) EndTransaction(q *godb.SqlTx, e porterr.IError) {
 	var err error
 	if e != nil {
@@ -158,7 +152,7 @@ func (app *Application) EndTransaction(q *godb.SqlTx, e porterr.IError) {
 	}
 }
 
-// Get absolute path to application
+// GetAbsolutePath Get absolute path to application
 func (app *Application) GetAbsolutePath(path string) string {
 	rootPath, err := filepath.Abs("")
 	if err != nil {
@@ -184,5 +178,6 @@ func init() {
 	App = &Application{
 		Application: gocli.NewApplication(environment, App.GetAbsolutePath("app/config/yaml"), &cfg),
 	}
+	App.SetLogger(gocli.NewLogger(cfg.Logger))
 	App.ParseFlags(&cfg.Arguments)
 }
