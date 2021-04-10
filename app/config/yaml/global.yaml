@@ -2,6 +2,9 @@ depends:
 project:
   name: gost
   debug: true
+logger:
+  format:
+    prefix: gost
 web:
   port: 8080
   host: 0.0.0.0

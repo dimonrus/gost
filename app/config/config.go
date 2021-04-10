@@ -9,6 +9,7 @@ import (
 
 type Config struct {
 	Project   ProjectConfig
+	Logger    gocli.LoggerConfig
 	Web       goweb.Config
 	Db        godb.PostgresConnectionConfig
 	Arguments gocli.Arguments

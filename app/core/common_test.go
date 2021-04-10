@@ -6,5 +6,5 @@ import (
 )
 
 func TestCommon(t *testing.T) {
-	base.App.GetLogger().Infoln("Tests are work's fine")
+	base.App.SuccessMessage("Tests are work's fine")
 }
