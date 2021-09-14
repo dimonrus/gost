@@ -19,11 +19,11 @@ db:
   connectionIdleLifetime: 15
 rabbit:
   queues:
-    golkp.test:
+    gost.test:
       exchange: amq.direct
       type: direct
       routingKey:
-        - golkp-test-message
+        - gost-test-message
       durable: true
 arguments:
   app:
