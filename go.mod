@@ -11,6 +11,6 @@ require (
 	github.com/dimonrus/goweb v1.2.8
 	github.com/dimonrus/porterr v1.10.1
 	github.com/gorilla/mux v1.8.0
-	github.com/lib/pq v1.10.2
+	github.com/lib/pq v1.10.3
 	github.com/streadway/amqp v1.0.0
 )
