@@ -121,3 +121,13 @@ swagger-lin:
 # Generate swagger sec
 swagger-spec:
 	 ./swagger generate spec -m -o swagger.json
+
+# Generate tls pair for web server
+tls-pair:
+	@read -p "Enter path: " path; \
+	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 1825 -nodes -out $$path/cert.crt -keyout $$path/key.key
+
+# Generate rsa pair
+keys:
+	@read -p "Enter keys path: " path; \
+	ssh-keygen -t rsa -m PEM -f $$path/id_rsa && openssl rsa -in $$path/id_rsa -pubout -out $$path/id_rsa.pub
