@@ -122,10 +122,10 @@ swagger-lin:
 swagger-spec:
 	 ./swagger generate spec -m -o swagger.json
 
-# Generate tls pair for web server
+# Generate tls pair for web server. Required OpenSSL 3.0.0
 tls-pair:
 	@read -p "Enter path: " path; \
-	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 1825 -nodes -out $$path/cert.crt -keyout $$path/key.key
+	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 1825 -nodes -out $$path/cert.crt -keyout $$path/key.key -subj "/CN=localhost" -addext "subjectAltName = DNS:localhost"
 
 # Generate rsa pair
 keys:
