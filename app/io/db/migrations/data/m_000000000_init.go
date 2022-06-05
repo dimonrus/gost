@@ -2,7 +2,7 @@
 package data
 
 import (
-	"github.com/dimonrus/godb"
+	"github.com/dimonrus/godb/v2"
 	"gost/app/base"
 )
 

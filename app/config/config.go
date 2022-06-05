@@ -2,7 +2,7 @@ package config
 
 import (
 	"github.com/dimonrus/gocli"
-	"github.com/dimonrus/godb"
+	"github.com/dimonrus/godb/v2"
 	"github.com/dimonrus/gorabbit"
 	"github.com/dimonrus/goweb"
 )

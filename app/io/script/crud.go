@@ -1,3 +1,4 @@
+// script file
 package script
 
 import (
@@ -9,7 +10,7 @@ import (
 )
 
 func init() {
-	base.App.GetScripts()["model"] = func(args gocli.Arguments) {
+	base.App.GetScripts()["crud"] = func(args gocli.Arguments) {
 		schema := "public"
 		table := args["file"].GetString()
 		if table == "" {
@@ -20,7 +21,7 @@ func init() {
 			schema = names[0]
 			table = names[1]
 		}
-		err := gomodel.MakeModel(base.App.GetDB(), "app/io/db/models", schema, table, "vendor/github.com/dimonrus/gomodel/model.tmpl", gomodel.DefaultSystemColumnsSoft)
+		err := gomodel.GenerateCrud("app/core", "app/client", "gost", schema, table, "", base.App.GetDB())
 		if err != nil {
 			base.App.FatalError(err)
 		}

@@ -3,7 +3,7 @@ package base
 import (
 	"errors"
 	"github.com/dimonrus/gocli"
-	"github.com/dimonrus/godb"
+	"github.com/dimonrus/godb/v2"
 	"github.com/dimonrus/gohelp"
 	"github.com/dimonrus/gorabbit"
 	"github.com/dimonrus/goweb"

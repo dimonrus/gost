@@ -2,7 +2,7 @@ package consumer
 
 import (
 	"github.com/dimonrus/gorabbit"
-	"github.com/streadway/amqp"
+	amqp "github.com/rabbitmq/amqp091-go"
 	"gost/app/base"
 )
 
