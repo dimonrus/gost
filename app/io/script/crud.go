@@ -21,7 +21,8 @@ func init() {
 			schema = names[0]
 			table = names[1]
 		}
-		err := gomodel.GenerateCrud("app/core", "app/client", "gost", schema, table, "", base.App.GetDB())
+		crud := gomodel.NewCRUDGenerator("app/core", "app/client", "app/io/web/api/", "gost")
+		err := crud.Generate(base.App.GetDB(), schema, table, "v1")
 		if err != nil {
 			base.App.FatalError(err)
 		}
