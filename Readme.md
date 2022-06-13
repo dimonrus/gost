@@ -18,6 +18,7 @@ api, cron, consumers, single script calls
 3. Command ```make script-migration``` to create migration file in 'app/io/db/migrations' folder
 4. Command ```make script-migrate``` to run migrations
 5. Command ```make script-model``` to create database model in 'app/io/db/models' folder. Table must exists
+5. Command ```make script-crud``` to create crud in core with CRUDL api using number 1-C 2-R 4-U 8-D 16-S
 
 ## Docker commands
 1. Command ```make docker-prune``` to clean old containers
