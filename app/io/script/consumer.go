@@ -46,7 +46,7 @@ func init() {
 			Queue  string
 			Server string
 		}{
-			Name: fileName.GetString(),
+			Name:   fileName.GetString(),
 			Queue:  queue.GetString(),
 			Server: server.GetString(),
 		})
@@ -67,7 +67,7 @@ package consumer
 
 import (
 	"github.com/dimonrus/gorabbit"
-	"github.com/streadway/amqp"
+	"github.com/rabbitmq/amqp091-go"
 	"gost/app/base"
 )
 
