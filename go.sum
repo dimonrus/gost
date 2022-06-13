@@ -4,8 +4,8 @@ github.com/dimonrus/godb/v2 v2.0.0-rc1 h1:EBDiTUpK6LTwQEhEPogUa7b6Rl5KExuVIor5K7
 github.com/dimonrus/godb/v2 v2.0.0-rc1/go.mod h1:oG/80M4gFWqPoXDPTPMxnjfTe9huv3MkDWmsvB/h7ck=
 github.com/dimonrus/gohelp v1.1.1 h1:oCHQ7WpCKv4DYwO1C8y3dLDGLYHWcszd7byY4wyvDIA=
 github.com/dimonrus/gohelp v1.1.1/go.mod h1:0zBPZxKW6rn2NEMWiCxyswKTdqM6UnSFrbR5H846ujk=
-github.com/dimonrus/gomodel v0.3.3 h1:Y2TGLU0y0bm9tN7CLWTroqTKgEDEyNKMv1KiKcj6Hzo=
-github.com/dimonrus/gomodel v0.3.3/go.mod h1:72R0TgUfGQ61u1Oa0UNsXq94R0dDWJAtfV4F2dVqUvw=
+github.com/dimonrus/gomodel v0.3.8 h1:aXKv0xXJhCkLZlfYWiMsf5XgNvffgS0xlexs0y+rp/A=
+github.com/dimonrus/gomodel v0.3.8/go.mod h1:72R0TgUfGQ61u1Oa0UNsXq94R0dDWJAtfV4F2dVqUvw=
 github.com/dimonrus/gorabbit v1.6.0 h1:m8NXW/SxjviCCe9pA9+tv0HtW5SMyekzx6kiDx1mzho=
 github.com/dimonrus/gorabbit v1.6.0/go.mod h1:qcMwjEa0zcw0ccbzM0eZEaGPkyWEbNdzBMF9FpYZAJo=
 github.com/dimonrus/gorest v0.8.4 h1:VOogmW4NJutibQzF5cQOTbXELf1CbPJklWKX11wN6e8=

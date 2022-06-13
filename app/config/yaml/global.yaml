@@ -44,3 +44,6 @@ arguments:
   server:
     type: string
     label: name of the server
+  num:
+    type: int
+    label: number of something
