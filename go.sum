@@ -8,13 +8,12 @@ github.com/dimonrus/gomodel v0.3.8 h1:aXKv0xXJhCkLZlfYWiMsf5XgNvffgS0xlexs0y+rp/
 github.com/dimonrus/gomodel v0.3.8/go.mod h1:72R0TgUfGQ61u1Oa0UNsXq94R0dDWJAtfV4F2dVqUvw=
 github.com/dimonrus/gorabbit v1.6.0 h1:m8NXW/SxjviCCe9pA9+tv0HtW5SMyekzx6kiDx1mzho=
 github.com/dimonrus/gorabbit v1.6.0/go.mod h1:qcMwjEa0zcw0ccbzM0eZEaGPkyWEbNdzBMF9FpYZAJo=
-github.com/dimonrus/gorest v0.8.4 h1:VOogmW4NJutibQzF5cQOTbXELf1CbPJklWKX11wN6e8=
-github.com/dimonrus/gorest v0.8.4/go.mod h1:Zf8zihJq0b20f2thJCGdHz6V13O88x/y8xBXBEF06IM=
+github.com/dimonrus/gorest v0.8.5 h1:UwHku2mHNk1G28q/jVOcfKT2Lssu40reJYcc9rSf0VY=
+github.com/dimonrus/gorest v0.8.5/go.mod h1:98LRrxC0E2lhEBzTomg6uyoMXcvmF8q/Akr7aqy5WNo=
 github.com/dimonrus/gosql v0.4.4 h1:SQIk5QFqZrw1lXRQLWMZFIdGIskZe56y48wJJoXGC+A=
 github.com/dimonrus/gosql v0.4.4/go.mod h1:lPkKWiSCED2RZQxaCHgFqazDPVvEADdvBURXJn4Bevw=
 github.com/dimonrus/goweb v1.4.0 h1:x1SOSSTHD9f6an+IRnwivU4Hl/BpFXkpK3i3e/T1utQ=
 github.com/dimonrus/goweb v1.4.0/go.mod h1:zKamStnuSjmvilEsanBcaw3DFD77nzImGE2NDkx+EEU=
-github.com/dimonrus/porterr v1.10.1/go.mod h1:BCVpaUyYdawPPzeAa8yjCYvemctND1I9ER/nFnOyDgQ=
 github.com/dimonrus/porterr v1.10.4 h1:pq8qIep+wUzSzWVMyg4F3RaSg2ltOfWGDa5cMrnh8mI=
 github.com/dimonrus/porterr v1.10.4/go.mod h1:BCVpaUyYdawPPzeAa8yjCYvemctND1I9ER/nFnOyDgQ=
 github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
