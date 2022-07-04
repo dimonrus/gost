@@ -24,7 +24,7 @@ func init() {
 		db := base.App.GetDB()
 		db.Debug = false
 		crud := gomodel.NewCRUDGenerator("app/core", "app/client", "app/io/web/api", "gost")
-		err := crud.Generate(base.App.GetDB(), schema, table, "v1", uint8(args["num"].GetInt()))
+		err := crud.Generate(base.App.GetDB(), schema, table, "v1", gomodel.CrudNumber(args["num"].GetInt()))
 		if err != nil {
 			base.App.FatalError(err)
 		}
