@@ -20,7 +20,7 @@ func init() {
 			schema = names[0]
 			table = names[1]
 		}
-		err := gomodel.MakeModel(base.App.GetDB(), "app/io/db/models", schema, table, "vendor/github.com/dimonrus/gomodel/model.tmpl", gomodel.DefaultSystemColumnsSoft)
+		_, _, err := gomodel.MakeModel(base.App.GetDB(), "app/io/db/models", schema, table, "", gomodel.DefaultSystemColumnsSoft)
 		if err != nil {
 			base.App.FatalError(err)
 		}
