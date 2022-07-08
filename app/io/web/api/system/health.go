@@ -27,7 +27,9 @@ import (
 //     Responses:
 //       200: ResponseMessage
 func HealthCheckHandler(w http.ResponseWriter, r *http.Request) {
-	gorest.Send(w, gorest.NewOkJsonResponse("Alive", nil, nil))
+	gorest.Send(w, gorest.NewOkJsonResponse(
+		fmt.Sprintf("%s service is alive", base.App.GetConfig().Project.Name), nil, nil),
+	)
 }
 
 // swagger:route GET /system/health-db system HealthDB
@@ -84,7 +86,7 @@ func MemoryUsage(w http.ResponseWriter, r *http.Request) {
 	gorest.Send(w, gorest.NewOkJsonResponse("Memory usage", report, nil))
 }
 
-// Swagger
+// Swagger route
 func Swagger(w http.ResponseWriter, r *http.Request) {
 	var e porterr.IError
 	if file, err := ioutil.ReadFile(base.App.GetAbsolutePath("resource/swagger.json")); err == nil {

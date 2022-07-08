@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-// System subroute
+// Init register system sub routes
 func Init(apiRoute *mux.Router, middleware ...mux.MiddlewareFunc) {
 	// SystemRoute
 	SystemRoute := apiRoute.PathPrefix("/system").Subrouter()

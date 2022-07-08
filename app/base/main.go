@@ -20,7 +20,7 @@ var (
 	App *Application
 )
 
-// Application Application struct
+// Application main application struct
 type Application struct {
 	gocli.Application
 	baseDb         *godb.DBO
@@ -90,7 +90,9 @@ func (app *Application) GetRabbit() *gorabbit.Application {
 // GetWeb Get web app
 func (app *Application) GetWeb() *goweb.Application {
 	if app.web == nil {
-		app.web = goweb.NewApplication(App.GetConfig().Web, app.Application, nil)
+		cfg := App.GetConfig().Web
+		cfg.Debug = app.GetConfig().Project.Debug
+		app.web = goweb.NewApplication(cfg, app.Application, nil)
 	}
 	return app.web
 }
