@@ -9,7 +9,7 @@ require (
 	github.com/dimonrus/gomodel v0.4.4
 	github.com/dimonrus/gorabbit v1.6.0
 	github.com/dimonrus/gorest v0.8.5
-	github.com/dimonrus/goweb v1.4.0
+	github.com/dimonrus/goweb v1.4.2
 	github.com/dimonrus/porterr v1.10.4
 	github.com/gorilla/mux v1.8.0
 	github.com/lib/pq v1.10.6
@@ -18,7 +18,7 @@ require (
 
 require (
 	github.com/dimonrus/gosql v0.4.4 // indirect
-	golang.org/x/net v0.0.0-20220225172249-27dd8689420f // indirect
+	golang.org/x/net v0.0.0-20220607020251-c690dde0001d // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
