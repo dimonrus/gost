@@ -65,7 +65,7 @@ func (app *Application) GetDB() *godb.DBO {
 	var baseErr error
 	app.baseDb, baseErr = godb.DBO{
 		Options: godb.Options{
-			Debug:  true,
+			Debug:  cfg.Project.Debug,
 			Logger: App.GetLogger(),
 		},
 		Connection: &cfg.Db,

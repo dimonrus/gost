@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-// JSON Answer. Common error response
+// ResponseError JSON Answer. Common error response
 //
 // swagger:response ResponseError
 type ResponseError struct {
@@ -22,7 +22,7 @@ type ResponseError struct {
 	}
 }
 
-// Common message response
+// ResponseMessage Common message response
 //
 // swagger:response ResponseMessage
 type ResponseMessage struct {
@@ -35,7 +35,7 @@ type ResponseMessage struct {
 	}
 }
 
-// Memory usage response
+// ResponseMemoryUsage Memory usage response
 //
 // swagger:response ResponseMemoryUsage
 type ResponseMemoryUsage struct {
