@@ -67,7 +67,7 @@ docker-consumer-run:
 # Create new project
 project:
 	@read -p "Enter project name: " name; \
-	rsync -av --progress . ../$$name --exclude vendor --exclude .idea --exclude .git; \
+	rsync -av --progress . ../$$name --exclude vendor --exclude gost --exclude swagger --exclude .idea --exclude .git; \
 	find ../$$name gost -path ./vendor -prune -o -path ./.idea -prune -o -path ./.git -prune -o -print -type f -exec sed -i '' -e "s/gost/$$name/g" {} \;
 
 # GO build project
