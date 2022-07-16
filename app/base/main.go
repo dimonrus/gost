@@ -82,7 +82,6 @@ func (app *Application) GetDB() *godb.DBO {
 func (app *Application) GetRabbit() *gorabbit.Application {
 	if app.rabbit == nil {
 		app.rabbit = gorabbit.NewApplication(App.GetConfig().Rabbit, app.Application)
-		app.rabbit.SetRegistry(make(gorabbit.Registry))
 	}
 	return app.rabbit
 }
@@ -100,13 +99,12 @@ func (app *Application) GetWeb() *goweb.Application {
 // GetMigration Get migration
 func (app *Application) GetMigration() *godb.Migration {
 	if app.migration == nil {
-		registry := make(godb.MigrationRegistry)
 		app.migration = &godb.Migration{
 			RegistryPath:  "gost/app/base",
 			MigrationPath: "app/io/db/migrations",
 			RegistryXPath: "base.App.GetMigration().Registry",
 			DBO:           app.GetDB(),
-			Registry:      registry,
+			Registry:      make(godb.MigrationRegistry),
 			Config:        app.GetConfig().Db.ConnectionConfig,
 		}
 	}
@@ -167,19 +165,27 @@ func (app *Application) GetAbsolutePath(path string) string {
 	return gohelp.BeforeString(rootPath, "gost") + "gost/" + path
 }
 
-// Init application
-func init() {
-	var cfg config.Config
-
-	// Get ENV value
+// GetENV return main env value
+func (app *Application) GetENV() string {
 	environment := os.Getenv("ENV")
 	if environment == "" {
-		panic("ENV is not defined")
+		environment = "local"
 	}
+	return environment
+}
 
+// New Init application
+func (app *Application) New() *Application {
+	var cfg config.Config
 	App = &Application{
-		Application: gocli.NewApplication(environment, App.GetAbsolutePath("app/config/yaml"), &cfg),
+		Application: gocli.NewApplication(app.GetENV(), App.GetAbsolutePath("app/config/yaml"), &cfg),
 	}
 	App.SetLogger(gocli.NewLogger(cfg.Logger))
 	App.ParseFlags(&cfg.Arguments)
+	return App
+}
+
+func init() {
+	// Init app
+	App.New().SuccessMessage("With ENV=" + App.GetENV())
 }

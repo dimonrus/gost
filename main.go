@@ -43,7 +43,6 @@ const (
 // Entry points for application
 func main() {
 	var e porterr.IError
-
 	switch base.App.GetAppType() {
 	case ApplicationTypeWeb:
 		base.App.GetWeb().Listen(web.GetRoutes())

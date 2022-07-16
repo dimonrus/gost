@@ -7,7 +7,7 @@ require (
 	github.com/dimonrus/godb/v2 v2.0.0
 	github.com/dimonrus/gohelp v1.1.1
 	github.com/dimonrus/gomodel v0.4.4
-	github.com/dimonrus/gorabbit v1.6.0
+	github.com/dimonrus/gorabbit v1.6.1
 	github.com/dimonrus/gorest v0.8.5
 	github.com/dimonrus/goweb v1.4.2
 	github.com/dimonrus/porterr v1.10.4
