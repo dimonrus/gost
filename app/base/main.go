@@ -174,18 +174,12 @@ func (app *Application) GetENV() string {
 	return environment
 }
 
-// New Init application
-func (app *Application) New() *Application {
+func init() {
+	// Init app
 	var cfg config.Config
 	App = &Application{
-		Application: gocli.NewApplication(app.GetENV(), App.GetAbsolutePath("app/config/yaml"), &cfg),
+		Application: gocli.NewApplication(App.GetENV(), App.GetAbsolutePath("app/config/yaml"), &cfg),
 	}
 	App.SetLogger(gocli.NewLogger(cfg.Logger))
 	App.ParseFlags(&cfg.Arguments)
-	return App
-}
-
-func init() {
-	// Init app
-	App.New().SuccessMessage("With ENV=" + App.GetENV())
 }

@@ -42,6 +42,7 @@ const (
 
 // Entry points for application
 func main() {
+	base.App.SuccessMessage("Application environment ENV=" + base.App.GetENV())
 	var e porterr.IError
 	switch base.App.GetAppType() {
 	case ApplicationTypeWeb:
