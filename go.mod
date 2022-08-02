@@ -6,7 +6,7 @@ require (
 	github.com/dimonrus/gocli v0.9.5
 	github.com/dimonrus/godb/v2 v2.0.1
 	github.com/dimonrus/gohelp v1.1.1
-	github.com/dimonrus/gomodel v0.4.5
+	github.com/dimonrus/gomodel v0.4.7
 	github.com/dimonrus/gorabbit v1.6.1
 	github.com/dimonrus/gorest v0.8.5
 	github.com/dimonrus/goweb v1.4.2
@@ -17,7 +17,7 @@ require (
 )
 
 require (
-	github.com/dimonrus/gosql v0.6.1 // indirect
+	github.com/dimonrus/gosql v0.6.2 // indirect
 	golang.org/x/net v0.0.0-20220607020251-c690dde0001d // indirect
 	golang.org/x/text v0.3.7 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
