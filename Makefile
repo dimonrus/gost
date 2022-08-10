@@ -104,9 +104,13 @@ swagger-lin: 			## Download swagger for linux
 swagger-spec: 			## Generate swagger sec
 	 ./swagger generate spec -m -o swagger.json
 
-tls-pair: 			## Generate tls pair for web server. Required OpenSSL 3.0.0
+cert-ca:			## Generate Certificate Authority's Certificate and Keys
 	@read -p "Enter path: " path; \
-	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 1825 -nodes -out $$path/cert.crt -keyout $$path/key.key -subj "/CN=localhost" -addext "subjectAltName = DNS:localhost"
+	openssl genrsa 2048 > $$path/ca.key && openssl req -new -x509 -nodes -days 1825 -key $$path/ca.key -out $$path/ca.crt
+
+cert-tls: 			## Generate tls pair for web server. Required OpenSSL 3.0.0
+	@read -p "Enter path: " path; \
+	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 1825 -CA $$path/ca.crt -CAkey $$path/ca.key -nodes -out $$path/cert.crt -keyout $$path/key.key -subj "/CN=localhost" -addext "subjectAltName = DNS:localhost"
 
 keys:				## Generate rsa pair
 	@read -p "Enter keys path: " path; \
