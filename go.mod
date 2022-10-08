@@ -12,8 +12,8 @@ require (
 	github.com/dimonrus/goweb v1.4.2
 	github.com/dimonrus/porterr v1.10.4
 	github.com/gorilla/mux v1.8.0
-	github.com/lib/pq v1.10.6
-	github.com/rabbitmq/amqp091-go v1.4.0
+	github.com/lib/pq v1.10.7
+	github.com/rabbitmq/amqp091-go v1.5.0
 )
 
 require (

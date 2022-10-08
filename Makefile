@@ -43,8 +43,8 @@ docker-test-run:		## Run tests in docker
 	docker run --rm --env-file="etc/env/.local" $(REGISTRY)/$(PROJECT)/test:$(TAG)
 
 docker-migrate: 		## Run migration in docker
-	docker run --rm $(REGISTRY)/$(PROJECT)/build:$(TAG) env ENV=$(TAG) app/$(PROJECT) -app=script -name=migration -class=schema
-	docker run --rm $(REGISTRY)/$(PROJECT)/build:$(TAG) env ENV=$(TAG) app/$(PROJECT) -app=script -name=migration -class=data
+	docker run --rm $(REGISTRY)/$(PROJECT)/build:$(TAG) env ENV=$(TAG) /go/src/$(PROJECT)/$(PROJECT) -app=script -name=migration -class=schema
+	docker run --rm $(REGISTRY)/$(PROJECT)/build:$(TAG) env ENV=$(TAG) /go/src/$(PROJECT)/$(PROJECT) -app=script -name=migration -class=data
 
 docker-consumer: 		## Build consumer image
 	make docker-build
@@ -52,6 +52,12 @@ docker-consumer: 		## Build consumer image
 
 docker-consumer-run:		## Run consumer image
 	docker run --rm --env-file="etc/env/.local" --name consumer $(REGISTRY)/$(PROJECT)/consumer:$(TAG)
+
+compose-build:			## Build dev environment
+	make docker-build && make docker-api && make docker-consumer && make docker-cron
+
+compose:			## Run dev environment
+	env REGISTRY=$(REGISTRY) PROJECT=$(PROJECT) TAG=$(TAG) docker compose -f compose.yaml up
 
 project: 			## Create new project
 	@read -p "Enter project name: " name; \
@@ -96,21 +102,21 @@ script-migrate:			## Run migration
 	env ENV=local ./$(PROJECT) -app script -name migration -class $$type
 
 swagger-mac: 			## Download swagger for mac
-	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.29.0/swagger_darwin_amd64 && chmod +x swagger
+	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.30.3/swagger_darwin_amd64 && chmod +x swagger
 
 swagger-lin: 			## Download swagger for linux
-	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.29.0/swagger_linux_amd64 && chmod +x swagger
+	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.30.3/swagger_linux_amd64 && chmod +x swagger
 
 swagger-spec: 			## Generate swagger sec
 	 ./swagger generate spec -m -o swagger.json
 
 cert-ca:			## Generate Certificate Authority's Certificate and Keys
 	@read -p "Enter path: " path; \
-	openssl genrsa 2048 > $$path/ca.key && openssl req -new -x509 -nodes -days 1825 -key $$path/ca.key -out $$path/ca.crt
+	openssl genrsa 2048 > $$path/ca.key && openssl req -new -x509 -nodes -days 825 -key $$path/ca.key -out $$path/ca.crt
 
 cert-tls: 			## Generate tls pair for web server. Required OpenSSL 3.0.0
 	@read -p "Enter path: " path; \
-	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 1825 -CA $$path/ca.crt -CAkey $$path/ca.key -nodes -out $$path/cert.crt -keyout $$path/key.key -subj "/CN=localhost" -addext "subjectAltName = DNS:localhost"
+	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 825 -CA $$path/ca.crt -CAkey $$path/ca.key -nodes -out $$path/cert.crt -keyout $$path/key.key -subj "/CN=localhost" -addext "subjectAltName = DNS:localhost"
 
 keys:				## Generate rsa pair
 	@read -p "Enter keys path: " path; \

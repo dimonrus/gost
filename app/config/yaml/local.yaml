@@ -1,15 +1,15 @@
 depends: global
 db:
-  host: 10.10.10.100
-  port: 5433
-  name: mpauth
-  user: mpauth
-  password: mpauth
+  host: postgres
+  port: 5432
+  name: gost
+  user: gost
+  password: gost
 rabbit:
   servers:
     local:
-      host: 127.0.0.1
-      vhost: vgost
+      host: rabbitmq
+      vhost: \
       port: 5672
       user: gost
-      password: gost
+      password: admin

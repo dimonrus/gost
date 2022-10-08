@@ -1,0 +1,74 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:15rc1-alpine3.16
+    environment:
+      POSTGRES_DB: "gost"
+      POSTGRES_USER: "gost"
+      POSTGRES_PASSWORD: "gost"
+    ports:
+      - "5432:5432"
+    command:
+      - "postgres"
+      - "-c"
+      - "max_connections=200"
+  rabbitmq:
+    image: rabbitmq:3.11.0-management-alpine
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - ./resource/rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./resource/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+  migration:
+    image: ${REGISTRY}/${PROJECT}/build:${TAG}
+    restart: on-failure
+    command:
+      - /bin/sh
+      - -c
+      - |
+        /go/src/gost/gost -app=script -name=migration -class=schema
+        /go/src/gost/gost -app=script -name=migration -class=data
+    volumes:
+      - ./app/config/yaml:/go/src/gost/config/yaml
+    depends_on:
+      - "postgres"
+    links:
+      - "postgres"
+  api:
+    image: ${REGISTRY}/${PROJECT}/api:${TAG}
+    ports:
+      - "8080:8080"
+    restart: on-failure
+    volumes:
+      - ./app/config/yaml:/gost/app/config/yaml
+    depends_on:
+      - "postgres"
+      - "rabbitmq"
+    links:
+      - "postgres"
+      - "rabbitmq"
+  consumer:
+    image: ${REGISTRY}/${PROJECT}/consumer:${TAG}
+    ports:
+      - "3333:3333"
+    restart: on-failure
+    volumes:
+      - ./app/config/yaml:/gost/app/config/yaml
+    depends_on:
+      - "postgres"
+      - "rabbitmq"
+    links:
+      - "postgres"
+      - "rabbitmq"
+  cron:
+    image: ${REGISTRY}/${PROJECT}/cron:${TAG}
+    restart: on-failure
+    volumes:
+      - ./app/config/yaml:/gost/app/config/yaml
+    depends_on:
+      - "postgres"
+      - "rabbitmq"
+    links:
+      - "postgres"
+      - "rabbitmq"
