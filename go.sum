@@ -1,6 +1,6 @@
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
-github.com/dimonrus/gocli v0.9.5 h1:ukbmhlK3Y0mFw838UbJjEP+O3yI4N/R+Ab2QzhTy9Gk=
-github.com/dimonrus/gocli v0.9.5/go.mod h1:q5O0wKXopR8BHqrrwfw0Wu0DiKTNLtvG9v9yRNMfBC4=
+github.com/dimonrus/gocli v0.9.6 h1:1VikSI0H3OmKYP90TytvXlgnwFqooJ3jcKnZfjqlGnM=
+github.com/dimonrus/gocli v0.9.6/go.mod h1:q5O0wKXopR8BHqrrwfw0Wu0DiKTNLtvG9v9yRNMfBC4=
 github.com/dimonrus/godb/v2 v2.0.1 h1:EIlNvxTVkr2bnXwNYcnw/ODQLqB1uB83Iq2Qt35QiEg=
 github.com/dimonrus/godb/v2 v2.0.1/go.mod h1:8NLIiyuorch8P9FK19h+SzM3aZHaETlxa7Im3+oy/jg=
 github.com/dimonrus/gohelp v1.1.1 h1:oCHQ7WpCKv4DYwO1C8y3dLDGLYHWcszd7byY4wyvDIA=
