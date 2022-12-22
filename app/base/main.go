@@ -17,7 +17,10 @@ import (
 )
 
 var (
+	// App Application object
 	App *Application
+	// StaticConfigPath relative config path
+	StaticConfigPath = "app/config/yaml"
 )
 
 // Application main application struct
@@ -103,7 +106,7 @@ func (app *Application) GetMigration() *godb.Migration {
 			RegistryPath:  "gost/app/base",
 			MigrationPath: "app/io/db/migrations",
 			RegistryXPath: "base.App.GetMigration().Registry",
-			DBO:           app.GetDB(),
+			DBO:           app.baseDb,
 			Registry:      make(godb.MigrationRegistry),
 			Config:        app.GetConfig().Db.ConnectionConfig,
 		}
@@ -178,7 +181,7 @@ func init() {
 	// Init app
 	var cfg config.Config
 	App = &Application{
-		Application: gocli.NewApplication(App.GetENV(), App.GetAbsolutePath("app/config/yaml"), &cfg),
+		Application: gocli.NewApplication(App.GetENV(), App.GetAbsolutePath(StaticConfigPath), &cfg),
 	}
 	App.SetLogger(gocli.NewLogger(cfg.Logger))
 	App.ParseFlags(&cfg.Arguments)

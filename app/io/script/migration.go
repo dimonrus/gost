@@ -12,6 +12,8 @@ import (
 func init() {
 	base.App.GetScripts()["migration"] = func(args gocli.Arguments) {
 		base.App.GetLogger().Info("Start migrations...")
+		// Check db is connected
+		base.App.GetDB()
 
 		// Get type of migration
 		class := args["class"].GetString()
