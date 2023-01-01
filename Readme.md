@@ -34,8 +34,11 @@ api, cron, consumers, single script calls
 10. Command ```make docker-migrate``` to run migration in docker container
 11. Command ```make docker-consumer``` to build consumer image
 12. Command ```make docker-consumer-run``` to run consumer image
-13. Command ```make compose-build``` build images for dev environment
-14. Command ```make compose``` to run dev environment
+
+## Compose commands
+1. Command ```make compose-build``` to build docker containers for all application type
+2. Command ```make compose-up``` to run project environment in docker containers
+3. Command ```make compose-down``` to stop project environment in docker containers
 
 ## Consumer commands via Netcat
 Consumers can be managed via Netcat, send consumer command on specific port

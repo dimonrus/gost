@@ -56,11 +56,11 @@ services:
     volumes:
       - ./app/config/yaml:/gost/app/config/yaml
     depends_on:
-      - "postgres"
       - "rabbitmq"
+      - "postgres"
     links:
-      - "postgres"
       - "rabbitmq"
+      - "postgres"
   cron:
     image: ${REGISTRY}/${PROJECT}/cron:${TAG}
     restart: on-failure

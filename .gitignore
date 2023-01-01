@@ -2,3 +2,4 @@
 vendor
 gost
 swagger
+resource/swagger.json

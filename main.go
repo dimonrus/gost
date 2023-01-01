@@ -1,25 +1,3 @@
-// Package main Gost Service.
-//
-// Entry point for the application
-//
-// Terms Of Service:
-//
-// All rights reserved by @GostCompany
-//
-//     Schemes: https
-//     Host: gost.com
-//     BasePath: /gost/api
-//     Version: 1.0.0
-//
-//     Consumes:
-//     - application/json
-//     - multipart/form-data
-//
-//     Produces:
-//     - application/json
-//     - binary
-//
-// swagger:meta
 package main
 
 import (
@@ -40,36 +18,56 @@ const (
 	ApplicationTypeConsumer = "consumer"
 )
 
+// RunWeb start web application
+func RunWeb() porterr.IError {
+	base.App.GetWeb().Listen(web.GetRoutes())
+	return nil
+}
+
+// RunScript start script application
+func RunScript() porterr.IError {
+	arguments := base.App.GetConfig().Arguments
+	name, ok := arguments["name"]
+	if !ok {
+		base.App.FatalError(errors.New("no script name specified"))
+	}
+	var e porterr.IError
+	scriptName := name.GetString()
+	if callback, ok := base.App.GetScripts()[scriptName]; ok {
+		base.App.SuccessMessage(fmt.Sprintf("Start script: %s", scriptName))
+		callback(arguments)
+	} else {
+		e = porterr.NewF(porterr.PortErrorScript, "Script file %s.go not found", scriptName)
+		base.App.FailMessage(e.Error())
+	}
+	return e
+}
+
+// RunConsumer start consumer application
+func RunConsumer() porterr.IError {
+	c := []byte(gorabbit.CommandConsumer + " " + gorabbit.CommandStart + " " + gorabbit.CommandKeyWordAll)
+	command := gocli.ParseCommand(c)
+	app := base.App.GetRabbit()
+	app.SuccessMessage("Starting AMQP Application...", command)
+	app.ConsumerCommander(command)
+	e := app.Start(":3333", app.ConsumerCommander)
+	if e != nil {
+		app.FailMessage(e.Error(), command)
+	}
+	return e
+}
+
 // Entry points for application
 func main() {
 	base.App.SuccessMessage("Application environment ENV=" + base.App.GetENV())
 	var e porterr.IError
 	switch base.App.GetAppType() {
 	case ApplicationTypeWeb:
-		base.App.GetWeb().Listen(web.GetRoutes())
+		e = RunWeb()
 	case ApplicationTypeScript:
-		arguments := base.App.GetConfig().Arguments
-		name, ok := arguments["name"]
-		if !ok {
-			base.App.FatalError(errors.New("no script name specified"))
-		}
-		scriptName := name.GetString()
-		if callback, ok := base.App.GetScripts()[scriptName]; ok {
-			base.App.SuccessMessage(fmt.Sprintf("Start script: %s", scriptName))
-			callback(arguments)
-		} else {
-			base.App.FailMessage(fmt.Sprintf("Script file %s.go not found", scriptName))
-		}
+		e = RunScript()
 	case ApplicationTypeConsumer:
-		c := gorabbit.CommandConsumer + " " + gorabbit.CommandStart + " " + gorabbit.CommandKeyWordAll
-		command := gocli.ParseCommand([]byte(c))
-		app := base.App.GetRabbit()
-		app.SuccessMessage("Starting AMQP Application...", command)
-		app.ConsumerCommander(command)
-		e = app.Start(":3333", app.ConsumerCommander)
-		if e != nil {
-			app.FailMessage(e.Error(), command)
-		}
+		e = RunConsumer()
 	default:
 		e = porterr.New(porterr.PortErrorParam, "app type is undefined")
 	}

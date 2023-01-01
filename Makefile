@@ -1,6 +1,12 @@
 TAG=$(shell git branch | sed -n -e 's/\* //p')
-PROJECT = $(shell basename `pwd`)
-REGISTRY = gost.com/golang
+COMMIT=$(shell git rev-parse --short --verify HEAD)
+PROJECT=$(shell basename `pwd`)
+NOW=$(shell date "+%F-%H-%M-%S")
+REGISTRY=gost.com/golang
+SYSTEMNS=gost/app/io/web/api/system
+LDFTAG=$(SYSTEMNS).Tag=$(TAG)
+LDFCOMMIT=$(SYSTEMNS).Commit=$(COMMIT)
+LDFRELEASE=$(SYSTEMNS).Release=$(NOW)
 
 help:	       			## Show this help.
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | sed -e 's/\\$$//' | sed -e 's/##//'
@@ -56,8 +62,15 @@ docker-consumer-run:		## Run consumer image
 compose-build:			## Build dev environment
 	make docker-build && make docker-api && make docker-consumer && make docker-cron
 
-compose:			## Run dev environment
+compose-up:			## Run dev environment
 	env REGISTRY=$(REGISTRY) PROJECT=$(PROJECT) TAG=$(TAG) docker compose -f compose.yaml up
+
+compose-down:		## Stop dev environment
+	env REGISTRY=$(REGISTRY) PROJECT=$(PROJECT) TAG=$(TAG) docker compose -f compose.yaml down
+
+lookup-var:			## Lookup for variable link name
+	@read -p "Enter var name: " name; \
+	go tool nm ./gost | grep $$name
 
 project: 			## Create new project
 	@read -p "Enter project name: " name; \
@@ -65,7 +78,7 @@ project: 			## Create new project
 	find ../$$name gost -path ./vendor -prune -o -path ./.idea -prune -o -path ./.git -prune -o -print -type f -exec sed -i '' -e "s/gost/$$name/g" {} \;
 
 project-build: 			## GO build project
-	go build -o $(PROJECT) main.go
+	go build -ldflags="-X '$(LDFTAG)' -X '$(LDFCOMMIT)' -X '$(LDFRELEASE)'" -o $(PROJECT) main.go
 
 project-size: 			## Project size
 	find ./app/ -name '*.go' | xargs wc -l
@@ -108,7 +121,9 @@ swagger-lin: 			## Download swagger for linux
 	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.30.3/swagger_linux_amd64 && chmod +x swagger
 
 swagger-spec: 			## Generate swagger sec
-	 ./swagger generate spec -m -o swagger.json
+	sed -i.bu 's/API_VERSION/$(TAG)/g' meta.go; \
+	./swagger generate spec -m -o resource/swagger.json; \
+	mv meta.go.bu meta.go
 
 cert-ca:			## Generate Certificate Authority's Certificate and Keys
 	@read -p "Enter path: " path; \

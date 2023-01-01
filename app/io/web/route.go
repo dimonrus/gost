@@ -35,39 +35,6 @@ type ResponseMessage struct {
 	}
 }
 
-// ResponseMemoryUsage Memory usage response
-//
-// swagger:response ResponseMemoryUsage
-type ResponseMemoryUsage struct {
-	// In: body
-	Body struct {
-		// Message
-		// Required: true
-		// Example: Memory usage
-		Message string `json:"message,omitempty"`
-		// Memory usage data
-		// Required: true
-		Data struct {
-			// Allocated memory
-			// Required: true
-			// Example: 100 KB
-			Allocated string `json:"allocated,omitempty"`
-			// Total allocated
-			// Required: true
-			// Example: 300 KB
-			TotalAllocated string `json:"total_allocated,omitempty"`
-			// System allocated memory
-			// Required: true
-			// Example: 200 KB
-			System string `json:"system,omitempty"`
-			// Count of GC cycle
-			// Required: true
-			// Example: 1
-			GarbageCollectors string `json:"garbage_collectors,omitempty"`
-		} `json:"data"`
-	}
-}
-
 // Get routes
 func GetRoutes() *mux.Router {
 	middleWare := goweb.NewMiddlewareCollection(base.App.GetConfig().Web, base.App.Application, -1)
