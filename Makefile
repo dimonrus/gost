@@ -131,7 +131,9 @@ cert-ca:			## Generate Certificate Authority's Certificate and Keys
 
 cert-tls: 			## Generate tls pair for web server. Required OpenSSL 3.0.0
 	@read -p "Enter path: " path; \
-	openssl req -new -newkey rsa:4096 -x509 -sha256 -days 825 -CA $$path/ca.crt -CAkey $$path/ca.key -nodes -out $$path/cert.crt -keyout $$path/key.key -subj "/CN=localhost" -addext "subjectAltName = DNS:localhost"
+	read -p "Enter host: " host; \
+	openssl req -newkey rsa:4096 -nodes -days 825 -keyout $$path/key.key -out $$path/cert.crt -subj "/CN=$$host" -addext "subjectAltName=DNS:$$host"; \
+	openssl x509 -req -days 825 -set_serial 01 -in $$path/cert.crt -out $$path/cert.crt -CA $$path/ca.crt -CAkey $$path/ca.key
 
 keys:				## Generate rsa pair
 	@read -p "Enter keys path: " path; \
