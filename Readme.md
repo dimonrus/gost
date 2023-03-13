@@ -2,6 +2,9 @@
 All business feature should be implemented in 'app/core' folder as single entry point for business logic.
 Each IO(api, consumers, scripts) should contain call the 'app/core' methods to prevent cycled import
 
+![GitHub](https://img.shields.io/github/license/dimonrus/gost)
+[![Docs](https://img.shields.io/static/v1?label=documentation&message=gostdocs&color=orange)](https://gostdocs.s2dy.ru/)
+
 ## Makefile description
 Project has a make file that allows to create docker container and helps build different aps such as
 api, cron, consumers, single script calls
