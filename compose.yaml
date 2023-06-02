@@ -1,7 +1,7 @@
 version: "3.9"
 services:
   postgres:
-    image: postgres:15.0-alpine3.16
+    image: postgres:15.3-alpine3.18
     environment:
       POSTGRES_DB: "gost"
       POSTGRES_USER: "gost"
@@ -13,7 +13,7 @@ services:
       - "-c"
       - "max_connections=200"
   rabbitmq:
-    image: rabbitmq:3.11.2-management-alpine
+    image: rabbitmq:3.11.17-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
