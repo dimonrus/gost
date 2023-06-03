@@ -7,6 +7,7 @@ import (
 	"github.com/dimonrus/gohelp"
 	"github.com/dimonrus/gorabbit"
 	"github.com/dimonrus/goweb"
+	"github.com/dimonrus/migrate"
 	"github.com/dimonrus/porterr"
 	_ "github.com/lib/pq"
 	"gost/app/config"
@@ -30,7 +31,7 @@ type Application struct {
 	tcpConnections *goweb.Connections
 	rabbit         *gorabbit.Application
 	web            *goweb.Application
-	migration      *godb.Migration
+	migration      *migrate.Migration
 	scripts        map[string]func(app gocli.Arguments)
 }
 
@@ -100,15 +101,14 @@ func (app *Application) GetWeb() *goweb.Application {
 }
 
 // GetMigration Get migration
-func (app *Application) GetMigration() *godb.Migration {
+func (app *Application) GetMigration() *migrate.Migration {
 	if app.migration == nil {
-		app.migration = &godb.Migration{
+		app.migration = &migrate.Migration{
 			RegistryPath:  "gost/app/base",
 			MigrationPath: "app/io/db/migrations",
 			RegistryXPath: "base.App.GetMigration().Registry",
 			DBO:           app.baseDb,
-			Registry:      make(godb.MigrationRegistry),
-			Config:        app.GetConfig().Db.ConnectionConfig,
+			Registry:      make(migrate.MigrationRegistry),
 		}
 	}
 	return app.migration
