@@ -18,5 +18,5 @@ func Init(apiRoute *mux.Router, middleware ...mux.MiddlewareFunc) {
 	// Swagger route
 	SystemRoute.HandleFunc("/swagger", Swagger).Methods(http.MethodGet)
 	// Use middleware
-	apiRoute.Use(middleware...)
+	SystemRoute.Use(middleware...)
 }
