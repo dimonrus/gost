@@ -33,19 +33,15 @@ func init() {
 			panic(err)
 		}
 		defer f.Close()
-
 		scriptTemplate := getScriptTemplate()
-
 		err = scriptTemplate.Execute(f, struct {
 			Name string
 		}{
 			Name: name,
 		})
-
 		if err != nil {
 			base.App.FatalError(err)
 		}
-
 		base.App.GetLogger().Infof("script file created: %s", name)
 	}
 }

@@ -33,7 +33,6 @@ func init() {
 		if err != nil {
 			base.App.FatalError(errors.New("init migration error: " + err.Error()))
 		}
-
 		// Execute migrations
 		err = base.App.GetMigration().Upgrade(class)
 		if err != nil {
