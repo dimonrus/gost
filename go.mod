@@ -6,7 +6,7 @@ require (
 	github.com/dimonrus/gocli v0.12.2
 	github.com/dimonrus/godb/v2 v2.4.2
 	github.com/dimonrus/gohelp v1.2.0
-	github.com/dimonrus/gomodel v0.9.0
+	github.com/dimonrus/gomodel v0.9.1
 	github.com/dimonrus/gorabbit v1.9.1
 	github.com/dimonrus/gorest v0.8.9
 	github.com/dimonrus/goweb v1.7.1
