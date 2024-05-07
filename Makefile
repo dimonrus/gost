@@ -141,3 +141,13 @@ cert-tls: 			## Generate tls pair for web server. Required OpenSSL 3.0.0
 keys:				## Generate rsa pair
 	@read -p "Enter keys path: " path; \
 	ssh-keygen -t rsa -m PEM -f $$path/id_rsa && openssl rsa -in $$path/id_rsa -pubout -out $$path/id_rsa.pub
+
+bench-core:			## Run specific benchmark in core
+	@read -p "Enter the name of core benchmark: " bench; \
+	go test ./app/core -bench=$$bench -memprofile mem.out -cpuprofile cpu.out -run=$$bench
+
+pprof-mem:			## Run pprof for mem.out
+	go tool pprof mem.out
+
+pprof-cpu:			## Run pprof for cpu.out
+	go tool pprof cpu.out
