@@ -144,10 +144,13 @@ keys:				## Generate rsa pair
 
 bench-core:			## Run specific benchmark in core
 	@read -p "Enter the name of core benchmark: " bench; \
-	go test ./app/core -bench=$$bench -memprofile mem.out -cpuprofile cpu.out -run=$$bench
+	go test ./app/core -bench=$$bench -memprofile mem.out -cpuprofile cpu.out -trace trace.out -run=$$bench
 
 pprof-mem:			## Run pprof for mem.out
 	go tool pprof mem.out
 
 pprof-cpu:			## Run pprof for cpu.out
 	go tool pprof cpu.out
+
+pprof-trace:		## Run pprof for trace.out
+	go tool pprof trace.out
