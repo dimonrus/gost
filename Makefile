@@ -74,8 +74,8 @@ lookup-var:			## Lookup for variable link name
 
 project: 			## Create new project
 	@read -p "Enter project name: " name; \
-	rsync -av --progress . ../$$name --exclude vendor --exclude gost --exclude swagger --exclude .idea --exclude .git; \
-	find ../$$name gost -path ./vendor -prune -o -path ./.idea -prune -o -path ./.git -prune -o -print -type f -exec sed -i '' -e "s/gost/$$name/g" {} \;
+	rsync -av --progress . ../$$name --exclude vendor --exclude .DS_Store --exclude gost --exclude swagger --exclude .idea --exclude .git; \
+	find ../$$name -path ./vendor -prune -o -path ./.idea -prune -o -path ./.git -prune -o -print -type f -exec sed -i '' -e "s/gost/$$name/g" {} \;
 
 project-build: 			## GO build project
 	go build -ldflags="-X '$(LDFTAG)' -X '$(LDFCOMMIT)' -X '$(LDFRELEASE)'" -o $(PROJECT) main.go
