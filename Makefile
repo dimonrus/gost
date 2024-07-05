@@ -115,13 +115,13 @@ script-migrate:			## Run migration
 	env ENV=local ./$(PROJECT) -app script -name migration -class $$type
 
 swagger-intel-mac: 			## Download swagger for mac
-	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.29.0/swagger_darwin_amd64 && chmod +x swagger
+	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.31.0/swagger_darwin_amd64 && chmod +x swagger
 
 swagger-arm-mac: 			## Download swagger for mac
-	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.29.0/swagger_darwin_arm64 && chmod +x swagger
+	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.31.0/swagger_darwin_arm64 && chmod +x swagger
 
 swagger-lin: 			## Download swagger for linux
-	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.29.0/swagger_linux_amd64 && chmod +x swagger
+	curl -o swagger  -L https://github.com/go-swagger/go-swagger/releases/download/v0.31.0/swagger_linux_amd64 && chmod +x swagger
 
 swagger-spec: 			## Generate swagger sec
 	sed -i.bu 's/API_VERSION/$(TAG)/g' meta.go; \
