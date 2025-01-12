@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/dimonrus/gocli v0.12.3
 	github.com/dimonrus/godb/v2 v2.5.2
-	github.com/dimonrus/gohelp v1.3.0
+	github.com/dimonrus/gohelp v1.4.1
 	github.com/dimonrus/gomodel v0.9.6
 	github.com/dimonrus/gorabbit v1.10.2
 	github.com/dimonrus/gorest v0.8.9
@@ -19,7 +19,7 @@ require (
 
 require (
 	github.com/dimonrus/gosql v0.9.5 // indirect
-	golang.org/x/net v0.29.0 // indirect
-	golang.org/x/text v0.18.0 // indirect
+	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/text v0.21.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
