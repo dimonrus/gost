@@ -3,14 +3,14 @@ module gost
 go 1.18
 
 require (
-	github.com/dimonrus/gocli v0.12.3
+	github.com/dimonrus/gocli v0.12.4
 	github.com/dimonrus/godb/v2 v2.5.2
-	github.com/dimonrus/gohelp v1.4.1
-	github.com/dimonrus/gomodel v0.9.6
-	github.com/dimonrus/gorabbit v1.10.2
+	github.com/dimonrus/gohelp v1.5.0
+	github.com/dimonrus/gomodel v0.9.7
+	github.com/dimonrus/gorabbit v1.10.3
 	github.com/dimonrus/gorest v0.8.9
-	github.com/dimonrus/goweb v1.7.2
-	github.com/dimonrus/migrate v0.1.3
+	github.com/dimonrus/goweb v1.7.4
+	github.com/dimonrus/migrate v0.1.4
 	github.com/dimonrus/porterr v1.13.1
 	github.com/gorilla/mux v1.8.1
 	github.com/lib/pq v1.10.9
