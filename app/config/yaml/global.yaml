@@ -1,7 +1,7 @@
 depends:
 project:
   name: gost
-  debug: true
+  debug: false
 logger:
   format:
     prefix: gost

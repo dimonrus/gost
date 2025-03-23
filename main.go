@@ -50,7 +50,7 @@ func RunConsumer() porterr.IError {
 	app := base.App.GetRabbit()
 	app.SuccessMessage("Starting AMQP Application...", command)
 	app.ConsumerCommander(command)
-	e := app.Start(":3333", app.ConsumerCommander)
+	e := app.Start("0.0.0.0:3333", app.ConsumerCommander)
 	if e != nil {
 		app.FailMessage(e.Error(), command)
 	}

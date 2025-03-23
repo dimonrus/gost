@@ -1,4 +1,6 @@
 depends: global
+project:
+  debug: true
 db:
   host: postgres
   port: 5432
