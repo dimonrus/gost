@@ -6,7 +6,7 @@ toolchain go1.24.0
 
 require (
 	github.com/dimonrus/gocli v0.12.5
-	github.com/dimonrus/godb/v2 v2.5.2
+	github.com/dimonrus/godb/v2 v2.5.3
 	github.com/dimonrus/gohelp v1.5.1
 	github.com/dimonrus/gomodel v0.9.8
 	github.com/dimonrus/gorabbit v1.10.4

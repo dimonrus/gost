@@ -1,7 +1,7 @@
 github.com/dimonrus/gocli v0.12.5 h1:6dVJCMG26tqZhIzWkNlrHEASt2bD6E+cFkGozC/zth4=
 github.com/dimonrus/gocli v0.12.5/go.mod h1:Hr8tJ6VPe31Fn3kviKNb1Xa0jcl+hbaDN2+NWsxdWN8=
-github.com/dimonrus/godb/v2 v2.5.2 h1:WR1TwAy7qQA2hWY1K6hhxfdKEsVW1RC6F0ChRB38Ck0=
-github.com/dimonrus/godb/v2 v2.5.2/go.mod h1:HeiTOJuB17uAoCpN2td0ciuNHpgVpP1BewQArgtemyg=
+github.com/dimonrus/godb/v2 v2.5.3 h1:KbuhAk5NNj/GQ+EGo+1+AvUFHW6O4DeofvLIlb42viQ=
+github.com/dimonrus/godb/v2 v2.5.3/go.mod h1:QX8uDRBVtjZsqhu9RIpmupbt6XVVJbcfLWvx0ifjqeA=
 github.com/dimonrus/gohelp v1.5.1 h1:Jh29Y8fSfTz1Lz1VnktPeciU5PE7Hoxegbf3g7O/wMk=
 github.com/dimonrus/gohelp v1.5.1/go.mod h1:0zBPZxKW6rn2NEMWiCxyswKTdqM6UnSFrbR5H846ujk=
 github.com/dimonrus/gomodel v0.9.8 h1:NA1B5byhGrsYIOyYkVsEkSldsGx1kdRxo/FJR2rU/04=
