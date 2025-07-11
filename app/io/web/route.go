@@ -35,7 +35,7 @@ type ResponseMessage struct {
 	}
 }
 
-// Get routes
+// GetRoutes init application routes
 func GetRoutes() *mux.Router {
 	middleWare := goweb.NewMiddlewareCollection(base.App.GetConfig().Web, base.App.Application, -1)
 

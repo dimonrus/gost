@@ -3,11 +3,9 @@ ARG image=image
 # Set allias for image
 FROM ${image:-image} AS build
 # Install curl
-RUN apk add curl
+RUN apk add curl git
 # Download swagger
-RUN curl -o swagger -L https://github.com/go-swagger/go-swagger/releases/download/v0.31.0/swagger_linux_amd64
-# Permission for swagger
-RUN chmod +x swagger
+RUN go install github.com/go-swagger/go-swagger/cmd/swagger@latest
 # Set up workdir
 WORKDIR /go/src/gost/
 # Generate spec

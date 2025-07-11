@@ -12,7 +12,7 @@ import (
 func Swagger(w http.ResponseWriter, r *http.Request) {
 	var e porterr.IError
 	if file, err := os.ReadFile(base.App.GetAbsolutePath("resource/swagger.json")); err == nil {
-		_, err := w.Write(file)
+		_, err = w.Write(file)
 		if err == nil {
 			return
 		}

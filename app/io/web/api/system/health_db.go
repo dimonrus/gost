@@ -11,7 +11,7 @@ import (
 //
 // System. Health check for db
 //
-// This will show information about health of db.
+// This will show information about the health of db.
 //
 //	Consumes:
 //	- application/json

@@ -27,7 +27,8 @@ docker-api:			## Build API image
 
 docker-swagger: 		## Build swagger image
 	make docker-build
-	docker build --no-cache -t $(REGISTRY)/$(PROJECT)/swagger --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/swagger.Dockerfile .
+	docker build --no-cache -t $(REGISTRY)/$(PROJECT)/swagger --build-arg image=$(REGISTRY)/$(PROJECT)/build:$(TAG) -f .docker/swagger.Dockerfile . ;\
+	docker cp $(shell docker create ${REGISTRY}/${PROJECT}/swagger):/go/src/$(PROJECT)/resource/swagger.json ./resource/swagger.json
 
 docker-api-run:			## Run api image
 	docker run --rm -p 8080:8080 --env-file="etc/env/.local" --name api $(REGISTRY)/$(PROJECT)/api:$(TAG)
@@ -125,7 +126,7 @@ swagger-lin: 			## Download swagger for linux
 
 swagger-spec: 			## Generate swagger sec
 	sed -i.bu 's/API_VERSION/$(TAG)/g' meta.go; \
-	./swagger generate spec -m -o resource/swagger.json; \
+	swagger generate spec -m -o resource/swagger.json; \
 	mv meta.go.bu meta.go
 
 cert-ca:			## Generate Certificate Authority's Certificate and Keys
