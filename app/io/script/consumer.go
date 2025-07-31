@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	base.App.GetScripts()["consumer"] = func(args gocli.Arguments) {
+	base.App.GetScripts()["consumer"] = func(args gocli.ArgumentMap) {
 		fileName, ok := args["file"]
 		if !ok || fileName.GetString() == "" {
 			base.App.GetLogger().Errorln("File name is not specified")

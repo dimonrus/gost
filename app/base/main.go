@@ -32,7 +32,7 @@ type Application struct {
 	rabbit         *gorabbit.Application
 	web            *goweb.Application
 	migration      *migrate.Migration
-	scripts        map[string]func(app gocli.Arguments)
+	scripts        map[string]func(app gocli.ArgumentMap)
 }
 
 // GetTcpConnections Get tcp connections
@@ -126,9 +126,9 @@ func (app *Application) ConnStateEvent(conn net.Conn, event http.ConnState) {
 }
 
 // GetScripts Get Script callback
-func (app *Application) GetScripts() map[string]func(app gocli.Arguments) {
+func (app *Application) GetScripts() map[string]func(app gocli.ArgumentMap) {
 	if app.scripts == nil {
-		app.scripts = make(map[string]func(app gocli.Arguments))
+		app.scripts = make(map[string]func(app gocli.ArgumentMap))
 	}
 	return app.scripts
 }
@@ -185,5 +185,5 @@ func init() {
 		Application: gocli.NewApplication(App.GetENV(), App.GetAbsolutePath(StaticConfigPath), &cfg),
 	}
 	App.SetLogger(gocli.NewLogger(cfg.Logger))
-	App.ParseFlags(&cfg.Arguments)
+	App.ParseFlags(cfg.Arguments)
 }

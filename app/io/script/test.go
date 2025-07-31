@@ -7,7 +7,7 @@ import (
 )
 
 func init() {
-	base.App.GetScripts()["test"] = func(args gocli.Arguments) {
+	base.App.GetScripts()["test"] = func(args gocli.ArgumentMap) {
 		base.App.GetLogger().Infoln("cron is works, ENV =", base.App.GetENV())
 	}
 }

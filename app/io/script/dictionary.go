@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	base.App.GetScripts()["dictionary"] = func(args gocli.Arguments) {
+	base.App.GetScripts()["dictionary"] = func(args gocli.ArgumentMap) {
 		var err error
 		path := args["file"].GetString()
 		if path != "" {

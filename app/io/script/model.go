@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	base.App.GetScripts()["model"] = func(args gocli.Arguments) {
+	base.App.GetScripts()["model"] = func(args gocli.ArgumentMap) {
 		schema := "public"
 		table := args["file"].GetString()
 		if table == "" {

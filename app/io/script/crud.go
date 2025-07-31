@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	base.App.GetScripts()["crud"] = func(args gocli.Arguments) {
+	base.App.GetScripts()["crud"] = func(args gocli.ArgumentMap) {
 		schema := "public"
 		table := args["file"].GetString()
 		if table == "" {

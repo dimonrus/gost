@@ -18,7 +18,7 @@ type Config struct {
 	// Database credentials and config
 	Db godb.PostgresConnectionConfig
 	// Cli application allowed arguments
-	Arguments gocli.Arguments
+	Arguments gocli.ArgumentMap
 	// Rabbit MQ configuration
 	Rabbit gorabbit.Config
 }

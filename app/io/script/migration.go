@@ -10,7 +10,7 @@ import (
 )
 
 func init() {
-	base.App.GetScripts()["migration"] = func(args gocli.Arguments) {
+	base.App.GetScripts()["migration"] = func(args gocli.ArgumentMap) {
 		base.App.GetLogger().Info("Start migrations...")
 		// Set db form migration
 		base.App.GetMigration().DBO = base.App.GetDB()
