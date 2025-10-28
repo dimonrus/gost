@@ -3,10 +3,11 @@ package script
 
 import (
 	"fmt"
-	"github.com/dimonrus/gocli"
 	"gost/app/base"
 	"os"
 	"text/template"
+
+	"github.com/dimonrus/gocli"
 )
 
 func init() {
@@ -57,7 +58,7 @@ import (
 )
 
 func init() {
-	base.App.GetScripts()["{{ .Name }}"] = func(args gocli.Arguments) {
+	base.App.GetScripts()["{{ .Name }}"] = func(args gocli.ArgumentMap) {
 		//write yours code here
 	}
 }`))

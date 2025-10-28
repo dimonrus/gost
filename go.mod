@@ -9,7 +9,7 @@ require (
 	github.com/dimonrus/godb/v2 v2.6.0
 	github.com/dimonrus/gohelp v1.6.2
 	github.com/dimonrus/gomodel v1.0.3
-	github.com/dimonrus/gorabbit v1.12.0
+	github.com/dimonrus/gorabbit v1.12.1
 	github.com/dimonrus/gorest v0.8.9
 	github.com/dimonrus/goweb v1.8.0
 	github.com/dimonrus/migrate v0.2.0
