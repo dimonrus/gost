@@ -3,10 +3,12 @@ package script
 
 import (
 	"fmt"
-	"github.com/dimonrus/gocli"
 	"gost/app/base"
 	"os"
+	"path/filepath"
 	"text/template"
+
+	"github.com/dimonrus/gocli"
 )
 
 func init() {
@@ -27,13 +29,12 @@ func init() {
 			return
 		}
 		folderPath := "app/io/consumer"
-		err := os.MkdirAll(folderPath, os.ModePerm)
+		err := os.MkdirAll(folderPath, FileMod)
 		if err != nil {
 			base.App.FatalError(err)
 		}
 		filePath := fmt.Sprintf("%s/%s.go", folderPath, fileName.GetString())
-
-		f, err := os.Create(filePath)
+		f, err := os.Create(filepath.Clean(filePath))
 		if err != nil {
 			base.App.FatalError(err)
 		}

@@ -3,10 +3,17 @@ package script
 
 import (
 	"errors"
+	"gost/app/base"
+	"io/fs"
+	"strings"
+
 	"github.com/dimonrus/gocli"
 	"github.com/dimonrus/gomodel"
-	"gost/app/base"
-	"strings"
+)
+
+const (
+	// FileMod permission for scripts
+	FileMod fs.FileMode = 0750
 )
 
 func init() {
@@ -24,7 +31,8 @@ func init() {
 		db := base.App.GetDB()
 		db.Debug = false
 		crud := gomodel.NewCRUDGenerator("app/core", "app/client", "app/io/web/api", "gost")
-		err := crud.Generate(base.App.GetDB(), schema, table, "v1", gomodel.CrudNumber(args["num"].GetInt()))
+		crudNumber := args["num"]
+		err := crud.Generate(base.App.GetDB(), schema, table, "v1", gomodel.CrudNumber(crudNumber.GetInt()&0xff))
 		if err != nil {
 			base.App.FatalError(err)
 		}
