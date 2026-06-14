@@ -25,7 +25,7 @@ let isUndoingRedoing = false;
 let saveTimeout = null;
 
 // LocalStorage key
-const STORAGE_KEY = 'go_visual_architect_state';
+const STORAGE_KEY = 'gost_architect_state';
 
 const canvas = document.getElementById('canvas');
 const canvasContainer = document.getElementById('canvasContainer');
