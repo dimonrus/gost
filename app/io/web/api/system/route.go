@@ -1,8 +1,9 @@
 package system
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 // Init register system sub routes
@@ -17,6 +18,8 @@ func Init(apiRoute *mux.Router, middleware ...mux.MiddlewareFunc) {
 	SystemRoute.HandleFunc("/memory", MemoryUsage).Methods(http.MethodGet)
 	// Swagger route
 	SystemRoute.HandleFunc("/swagger", Swagger).Methods(http.MethodGet)
+	// Architect app
+	SystemRoute.HandleFunc("/architect", ArchitectHandler).Methods(http.MethodGet)
 	// Use middleware
 	SystemRoute.Use(middleware...)
 }
