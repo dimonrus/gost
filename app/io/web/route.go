@@ -3,6 +3,7 @@ package web
 import (
 	"gost/app/base"
 	"gost/app/io/web/api/system"
+	"gost/app/io/web/static/architect"
 	"net/http"
 
 	"github.com/dimonrus/gorest"
@@ -49,6 +50,9 @@ func GetRoutes() *mux.Router {
 
 	// System sub route
 	system.Init(ApiRoute)
+
+	// Architect routes
+	architect.Init(MainRoute)
 
 	// Setup middleware
 	routes.Use(middleWare.LoggingMiddleware)

@@ -1,4 +1,4 @@
-package system
+package architect
 
 import (
 	"gost/app/base"
@@ -10,7 +10,7 @@ import (
 // swagger:response ResponseArchitectHandler
 type ResponseArchitectHandler struct{}
 
-// swagger:route GET /system/architect System ArchitectHandler
+// swagger:route GET /architect System ArchitectHandler
 //
 // System. Architect your app
 //
