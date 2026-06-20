@@ -14,7 +14,7 @@ require (
 	github.com/dimonrus/porterr v1.13.2
 	github.com/gorilla/mux v1.8.1
 	github.com/lib/pq v1.10.9
-	github.com/rabbitmq/amqp091-go v1.11.0
+	github.com/rabbitmq/amqp091-go v1.12.0
 )
 
 require (
