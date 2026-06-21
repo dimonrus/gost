@@ -14,6 +14,9 @@ let resizeStart = {x: 0, y: 0, w: 0, h: 0};
 // Selected block for copy operations
 let selectedBlockId = null;
 
+// Z-index management for block layering
+let zIndexCounter = 10;
+
 // Zoom state
 let zoom = 1.0;
 const MIN_ZOOM = 0.25;
@@ -154,8 +157,10 @@ function restoreState(state) {
     blocks = JSON.parse(JSON.stringify(state.blocks));
     nextId = state.nextId;
 
-    // Re-render all blocks
-    blocks.forEach(block => {
+    // Reset z-index counter and assign z-indexes
+    zIndexCounter = 10;
+    blocks.forEach((block, index) => {
+        block.zIndex = 10 + index;
         renderBlock(block);
     });
 
@@ -336,6 +341,7 @@ function addBlock(type, data = null) {
         }
     }
 
+    blockData.zIndex = ++zIndexCounter;
     blocks.push(blockData);
     renderBlock(blockData);
     updateConnections();
@@ -353,6 +359,7 @@ function renderBlock(block) {
     el.style.minWidth = '240px';
     el.style.minHeight = '80px';
     el.style.borderColor = block.color || DEFAULT_COLORS[block.type];
+    el.style.zIndex = block.zIndex || ++zIndexCounter;
 
     let icon = block.type === 'interface' ? 'I' : block.type === 'struct' ? 'S' : 'F';
     let typeLabel = block.type === 'interface' ? 'interface' : block.type === 'struct' ? 'struct' : 'func';
@@ -462,6 +469,8 @@ function selectBlock(blockId) {
     const el = document.getElementById(`block-${blockId}`);
     if (el) {
         el.classList.add('selected');
+        // Bring block to front by assigning highest z-index
+        el.style.zIndex = ++zIndexCounter;
     }
 }
 
@@ -495,6 +504,9 @@ function copyBlock(blockId) {
     // Ensure position stays within canvas bounds
     copiedBlock.x = Math.min(copiedBlock.x, 4800);
     copiedBlock.y = Math.min(copiedBlock.y, 4800);
+
+    // Assign z-index for the new block
+    copiedBlock.zIndex = ++zIndexCounter;
 
     // Add to blocks array
     blocks.push(copiedBlock);
