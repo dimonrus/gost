@@ -17,6 +17,9 @@ let selectedBlockId = null;
 // Z-index management for block layering
 let zIndexCounter = 10;
 
+// Track external badges (outside blocks, on canvas)
+let blockBadges = {}; // blockId -> badgeElement
+
 // Drag-and-drop sorting state
 let draggedSortItem = null;
 let draggedSortType = null; // 'field' or 'method'
@@ -456,6 +459,12 @@ function renderBlock(block) {
 
     canvas.appendChild(el);
 
+    // Handle body scrolling based on explicit height
+    const bodyEl = document.getElementById(`block-body-${block.id}`);
+    if (bodyEl && block.height) {
+        el.style.height = block.height + 'px';
+    }
+
     // Attach drag-and-drop event listeners after DOM insertion
     attachSortListeners(block.id);
 }
@@ -484,7 +493,38 @@ function selectBlock(blockId) {
     if (el) {
         el.classList.add('selected');
         // Bring block to front by assigning highest z-index
-        el.style.zIndex = ++zIndexCounter;
+        const newZ = ++zIndexCounter;
+        el.style.zIndex = newZ;
+
+        // Bring related connection lines to front
+        document.querySelectorAll(`.connection-line[data-struct-id="${blockId}"], .connection-line[data-iface-id="${blockId}"]`).forEach(line => {
+            line.style.zIndex = newZ - 1;
+        });
+
+        // Bring related badges to front
+        if (blockBadges[blockId]) {
+            blockBadges[blockId].forEach(badge => {
+                badge.style.zIndex = newZ + 1;
+            });
+        }
+        // Also check if this block is an interface implemented by others
+        const block = blocks.find(b => b.id === blockId);
+        if (block && block.type === 'struct') {
+            // This struct might implement interfaces - bring those badges too
+            // (already covered by blockBadges[blockId])
+        }
+        if (block && block.type === 'interface') {
+            // Find all structs that implement this interface
+            blocks.filter(b => b.type === 'struct').forEach(struct => {
+                if (structImplementsInterface(struct, block)) {
+                    if (blockBadges[struct.id]) {
+                        blockBadges[struct.id].forEach(badge => {
+                            badge.style.zIndex = newZ + 1;
+                        });
+                    }
+                }
+            });
+        }
     }
 }
 
@@ -677,7 +717,15 @@ function handleSortDrop(e) {
 
 function refreshBlockBody(block) {
     const bodyEl = document.getElementById(`block-body-${block.id}`);
-    if (!bodyEl) return;
+    const blockEl = document.getElementById(`block-${block.id}`);
+    if (!bodyEl || !blockEl) return;
+
+    // If block has explicit height, ensure body fills remaining space
+    if (block.height) {
+        blockEl.style.height = block.height + 'px';
+    } else {
+        blockEl.style.height = 'auto';
+    }
 
     let methodsHtml = '';
     if (block.methods && block.methods.length > 0) {
@@ -937,6 +985,7 @@ document.addEventListener('mousemove', (e) => {
         el.style.left = draggedBlock.x + 'px';
         el.style.top = draggedBlock.y + 'px';
 
+        updateBadgePositions(draggedBlock.id);
         updateConnections();
     }
 
@@ -993,6 +1042,7 @@ function updateConnections() {
     document.querySelectorAll('.connection-line').forEach(el => el.remove());
     connections = [];
     document.querySelectorAll('.implementation-badge').forEach(el => el.remove());
+    blockBadges = {};
 
     const interfaces = blocks.filter(b => b.type === 'interface');
     const structs = blocks.filter(b => b.type === 'struct');
@@ -1046,6 +1096,8 @@ function drawConnection(struct, iface) {
 
     const line = document.createElement('div');
     line.className = 'connection-line';
+    line.dataset.structId = struct.id;
+    line.dataset.ifaceId = iface.id;
 
     const svgNS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(svgNS, 'svg');
@@ -1069,12 +1121,21 @@ function drawConnection(struct, iface) {
 
     connections.push({struct: struct.id, interface: iface.id});
 
+    // Create badge as external element on canvas (not inside block, to avoid overflow clipping)
     const badge = document.createElement('div');
     badge.className = 'implementation-badge';
+    badge.id = `badge-${struct.id}-${iface.id}`;
     badge.textContent = 'implements';
     badge.title = `Implements ${iface.name}`;
     badge.style.background = iface.color || DEFAULT_COLORS.interface;
-    structEl.appendChild(badge);
+    badge.style.left = (struct.x + structEl.offsetWidth - 65) + 'px';
+    badge.style.top = (struct.y - 8) + 'px';
+    badge.style.zIndex = (struct.zIndex || 10) + 10;
+    canvas.appendChild(badge);
+
+    // Track badge
+    if (!blockBadges[struct.id]) blockBadges[struct.id] = [];
+    blockBadges[struct.id].push(badge);
 }
 
 // ============================================
@@ -1259,12 +1320,26 @@ function parseReturns(returnsStr) {
 function refreshBlock(block) {
     const el = document.getElementById(`block-${block.id}`);
     if (el) {
-        // Reset height to auto so content fits, but keep width
-        block.height = null;
+        // Preserve user-set height; only reset if content doesn't fit
+        const hadExplicitHeight = block.height !== null && block.height !== undefined;
+        if (!hadExplicitHeight) {
+            block.height = null;
+        }
         el.remove();
         renderBlock(block);
         updateConnections();
     }
+}
+
+function updateBadgePositions(blockId) {
+    const block = blocks.find(b => b.id === blockId);
+    const el = document.getElementById(`block-${blockId}`);
+    if (!block || !el || !blockBadges[blockId]) return;
+
+    blockBadges[blockId].forEach(badge => {
+        badge.style.left = (block.x + el.offsetWidth - 8) + 'px';
+        badge.style.top = (block.y - 8) + 'px';
+    });
 }
 
 function clearCanvas() {

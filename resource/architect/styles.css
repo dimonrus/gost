@@ -98,7 +98,9 @@ body {
     cursor: move;
     user-select: none;
     transition: box-shadow 0.2s, border-color 0.2s;
-    overflow: visible;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 .block:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
 .block.selected {
@@ -116,6 +118,7 @@ body {
     gap: 8px;
     font-weight: 600;
     font-size: 14px;
+    flex-shrink: 0;
 }
 .block.interface .block-header { color: #58a6ff; }
 .block.struct .block-header { color: #3fb950; }
@@ -174,7 +177,10 @@ body {
 .block-body {
     padding: 10px 14px;
     font-size: 12px;
-    overflow: visible;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    min-height: 0;
 }
 
 .section-title {
@@ -313,7 +319,7 @@ body {
 .connection-line {
     position: absolute;
     pointer-events: none;
-    z-index: 1;
+    z-index: 50;
 }
 .connection-line svg {
     overflow: visible;
@@ -321,9 +327,9 @@ body {
 .connection-path {
     fill: none;
     stroke: #58a6ff;
-    stroke-width: 2;
+    stroke-width: 2.5;
     stroke-dasharray: 5,5;
-    opacity: 0.7;
+    opacity: 0.85;
 }
 
 .modal-overlay {
@@ -393,14 +399,15 @@ body {
 
 .implementation-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
     background: #238636;
     color: white;
     font-size: 9px;
     padding: 2px 6px;
     border-radius: 10px;
     font-weight: bold;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
 .tooltip {
@@ -436,6 +443,7 @@ body {
     cursor: nwse-resize;
     z-index: 10;
     background: transparent;
+    flex-shrink: 0;
 }
 .resize-handle::after {
     content: '';
@@ -576,6 +584,12 @@ body {
 .sortable-item.dragging .edit-actions {
     opacity: 0.3;
 }
+
+
+.block-body::-webkit-scrollbar { width: 5px; }
+.block-body::-webkit-scrollbar-track { background: transparent; }
+.block-body::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+.block-body::-webkit-scrollbar-thumb:hover { background: #484f58; }
 
 .block::-webkit-scrollbar { width: 6px; height: 6px; }
 .block::-webkit-scrollbar-track { background: transparent; }
