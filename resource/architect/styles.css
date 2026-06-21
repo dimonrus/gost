@@ -319,7 +319,7 @@ body {
 .connection-line {
     position: absolute;
     pointer-events: none;
-    z-index: 50;
+    z-index: 5;
 }
 .connection-line svg {
     overflow: visible;

@@ -1098,6 +1098,7 @@ function drawConnection(struct, iface) {
     line.className = 'connection-line';
     line.dataset.structId = struct.id;
     line.dataset.ifaceId = iface.id;
+    line.style.zIndex = structEl.style.zIndex
 
     const svgNS = 'http://www.w3.org/2000/svg';
     const svg = document.createElementNS(svgNS, 'svg');
@@ -1130,7 +1131,7 @@ function drawConnection(struct, iface) {
     badge.style.background = iface.color || DEFAULT_COLORS.interface;
     badge.style.left = (struct.x + structEl.offsetWidth - 65) + 'px';
     badge.style.top = (struct.y - 8) + 'px';
-    badge.style.zIndex = (struct.zIndex || 10) + 10;
+    badge.style.zIndex = (struct.zIndex || 10) + 1;
     canvas.appendChild(badge);
 
     // Track badge
@@ -1337,7 +1338,7 @@ function updateBadgePositions(blockId) {
     if (!block || !el || !blockBadges[blockId]) return;
 
     blockBadges[blockId].forEach(badge => {
-        badge.style.left = (block.x + el.offsetWidth - 8) + 'px';
+        badge.style.left = (block.x + el.offsetWidth - 65) + 'px';
         badge.style.top = (block.y - 8) + 'px';
     });
 }
