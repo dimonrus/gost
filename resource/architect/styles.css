@@ -200,7 +200,7 @@ body {
 .field-row {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 4px;
     padding: 4px 0;
     border-bottom: 1px solid #21262d;
 }
@@ -216,8 +216,8 @@ body {
     outline: none;
 }
 .field-row input:focus { border-color: #58a6ff; }
-.field-name { width: 90px; }
-.field-type { width: 100px; }
+.field-name { width: 85px; }
+.field-type { width: 95px; }
 
 .remove-field {
     color: #8b949e;
@@ -499,6 +499,82 @@ body {
 .color-option.selected {
     border-color: #fff;
     box-shadow: 0 0 0 2px #58a6ff;
+}
+
+
+/* ===== DRAG-AND-DROP SORTING ===== */
+.sortable-item {
+    cursor: grab;
+    position: relative;
+    transition: background 0.15s, transform 0.15s;
+}
+
+.sortable-item:active {
+    cursor: grabbing;
+}
+
+.drag-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #484f58;
+    font-size: 10px;
+    letter-spacing: -1px;
+    padding: 2px 4px;
+    cursor: grab;
+    border-radius: 3px;
+    transition: color 0.2s, background 0.2s;
+    user-select: none;
+    line-height: 1;
+}
+
+.drag-handle:hover {
+    color: #8b949e;
+    background: rgba(255,255,255,0.05);
+}
+
+.sortable-item:hover .drag-handle {
+    color: #6e7681;
+}
+
+.sortable-item.dragging {
+    opacity: 0.5;
+    background: rgba(88,166,255,0.08);
+    border-radius: 4px;
+}
+
+.sortable-item.drop-above {
+    border-top: 2px solid #58a6ff;
+    margin-top: -1px;
+}
+
+.sortable-item.drop-below {
+    border-bottom: 2px solid #58a6ff;
+    margin-bottom: -1px;
+}
+
+/* Ensure field inputs don't interfere with drag */
+.field-row input {
+    pointer-events: auto;
+}
+
+.field-row .drag-handle,
+.method-row .drag-handle {
+    flex-shrink: 0;
+}
+
+/* Adjust method row for drag handle */
+.method-row {
+    align-items: center;
+}
+
+.method-row .method-signature-display {
+    flex: 1;
+}
+
+/* When dragging, hide the edit buttons to reduce clutter */
+.sortable-item.dragging .edit-actions {
+    opacity: 0.3;
 }
 
 .block::-webkit-scrollbar { width: 6px; height: 6px; }

@@ -17,6 +17,12 @@ let selectedBlockId = null;
 // Z-index management for block layering
 let zIndexCounter = 10;
 
+// Drag-and-drop sorting state
+let draggedSortItem = null;
+let draggedSortType = null; // 'field' or 'method'
+let draggedSortBlockId = null;
+let draggedSortIndex = null;
+
 // Zoom state
 let zoom = 1.0;
 const MIN_ZOOM = 0.25;
@@ -154,11 +160,10 @@ function restoreState(state) {
     document.querySelectorAll('.block').forEach(el => el.remove());
     document.querySelectorAll('.connection-line').forEach(el => el.remove());
 
-    blocks = JSON.parse(JSON.stringify(state.blocks));
-    nextId = state.nextId;
-
     // Reset z-index counter and assign z-indexes
     zIndexCounter = 10;
+    blocks = JSON.parse(JSON.stringify(state.blocks));
+    nextId = state.nextId;
     blocks.forEach((block, index) => {
         block.zIndex = 10 + index;
         renderBlock(block);
@@ -403,15 +408,7 @@ function renderBlock(block) {
                     </div>
                 `;
         block.fields.forEach((field, idx) => {
-            fieldsHtml += `
-                        <div class="field-row">
-                            <input class="field-name" value="${escapeHtml(field.name)}" 
-                                onchange="updateFieldName(${block.id}, ${idx}, this.value)">
-                            <input class="field-type" value="${escapeHtml(field.type)}" 
-                                onchange="updateFieldType(${block.id}, ${idx}, this.value)">
-                            <span class="remove-field" onclick="removeField(${block.id}, ${idx})">×</span>
-                        </div>
-                    `;
+            fieldsHtml += renderFieldView(block.id, idx, field);
         });
     } else if (block.type === 'struct') {
         fieldsHtml = `
@@ -450,13 +447,30 @@ function renderBlock(block) {
             e.target.classList.contains('resize-handle') || e.target.closest('.color-picker-dropdown') ||
             e.target.classList.contains('color-picker-btn') || e.target.classList.contains('color-option') ||
             e.target.classList.contains('edit-btn') || e.target.closest('.edit-actions') ||
-            e.target.classList.contains('copy-btn')) {
+            e.target.classList.contains('copy-btn') || e.target.classList.contains('drag-handle') ||
+            e.target.classList.contains('sortable-item')) {
             return;
         }
         selectBlock(block.id);
     });
 
     canvas.appendChild(el);
+
+    // Attach drag-and-drop event listeners after DOM insertion
+    attachSortListeners(block.id);
+}
+
+function renderFieldView(blockId, idx, field) {
+    return `
+        <div class="field-row sortable-item" draggable="true" data-block-id="${blockId}" data-index="${idx}" data-type="field">
+            <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
+            <input class="field-name" value="${escapeHtml(field.name)}" 
+                onchange="updateFieldName(${blockId}, ${idx}, this.value)">
+            <input class="field-type" value="${escapeHtml(field.type)}" 
+                onchange="updateFieldType(${blockId}, ${idx}, this.value)">
+            <span class="remove-field" onclick="removeField(${blockId}, ${idx})">×</span>
+        </div>
+    `;
 }
 
 function selectBlock(blockId) {
@@ -522,12 +536,200 @@ function copyBlock(blockId) {
     saveState();
 }
 
+// ============================================
+// DRAG-AND-DROP SORTING
+// ============================================
+function attachSortListeners(blockId) {
+    const blockBody = document.getElementById(`block-body-${blockId}`);
+    if (!blockBody) return;
+
+    const sortables = blockBody.querySelectorAll('.sortable-item');
+    sortables.forEach(item => {
+        item.addEventListener('dragstart', handleSortDragStart);
+        item.addEventListener('dragend', handleSortDragEnd);
+        item.addEventListener('dragover', handleSortDragOver);
+        item.addEventListener('drop', handleSortDrop);
+        item.addEventListener('dragenter', handleSortDragEnter);
+        item.addEventListener('dragleave', handleSortDragLeave);
+    });
+}
+
+function handleSortDragStart(e) {
+    e.stopPropagation();
+    draggedSortItem = this;
+    draggedSortType = this.dataset.type;
+    draggedSortBlockId = parseInt(this.dataset.blockId);
+    draggedSortIndex = parseInt(this.dataset.index);
+
+    this.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('text/plain', '');
+
+    // Prevent the block drag from interfering
+    e.dataTransfer.setData('sort-drag', 'true');
+}
+
+function handleSortDragEnd(e) {
+    e.stopPropagation();
+    this.classList.remove('dragging');
+
+    // Remove all drop indicators
+    document.querySelectorAll('.sortable-item').forEach(item => {
+        item.classList.remove('drop-above', 'drop-below');
+    });
+
+    draggedSortItem = null;
+    draggedSortType = null;
+    draggedSortBlockId = null;
+    draggedSortIndex = null;
+}
+
+function handleSortDragOver(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!draggedSortItem || this === draggedSortItem) return;
+    if (this.dataset.type !== draggedSortType) return;
+    if (parseInt(this.dataset.blockId) !== draggedSortBlockId) return;
+
+    e.dataTransfer.dropEffect = 'move';
+
+    const rect = this.getBoundingClientRect();
+    const midpoint = rect.top + rect.height / 2;
+
+    // Remove previous indicators from siblings
+    const parent = this.parentElement;
+    parent.querySelectorAll('.sortable-item').forEach(item => {
+        if (item !== this) {
+            item.classList.remove('drop-above', 'drop-below');
+        }
+    });
+
+    if (e.clientY < midpoint) {
+        this.classList.remove('drop-below');
+        this.classList.add('drop-above');
+    } else {
+        this.classList.remove('drop-above');
+        this.classList.add('drop-below');
+    }
+}
+
+function handleSortDragEnter(e) {
+    e.preventDefault();
+}
+
+function handleSortDragLeave(e) {
+    // Only remove if we're actually leaving the element (not entering a child)
+    if (!this.contains(e.relatedTarget)) {
+        this.classList.remove('drop-above', 'drop-below');
+    }
+}
+
+function handleSortDrop(e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!draggedSortItem || this === draggedSortItem) return;
+    if (this.dataset.type !== draggedSortType) return;
+    if (parseInt(this.dataset.blockId) !== draggedSortBlockId) return;
+
+    const block = blocks.find(b => b.id === draggedSortBlockId);
+    if (!block) return;
+
+    const fromIndex = draggedSortIndex;
+    const toIndex = parseInt(this.dataset.index);
+
+    const rect = this.getBoundingClientRect();
+    const midpoint = rect.top + rect.height / 2;
+    let targetIndex = toIndex;
+
+    // Determine insert position based on drop location
+    if (e.clientY > midpoint) {
+        targetIndex = toIndex + 1;
+    }
+
+    // Adjust target if moving from above to below
+    if (fromIndex < targetIndex) {
+        targetIndex--;
+    }
+
+    // Perform the reorder
+    if (draggedSortType === 'field' && block.fields) {
+        const [moved] = block.fields.splice(fromIndex, 1);
+        block.fields.splice(targetIndex, 0, moved);
+    } else if (draggedSortType === 'method' && block.methods) {
+        const [moved] = block.methods.splice(fromIndex, 1);
+        block.methods.splice(targetIndex, 0, moved);
+    }
+
+    // Refresh the block body to reflect new order
+    refreshBlockBody(block);
+
+    // Save state
+    updateConnections();
+    saveState();
+
+    // Clean up visual indicators
+    document.querySelectorAll('.sortable-item').forEach(item => {
+        item.classList.remove('drop-above', 'drop-below', 'dragging');
+    });
+}
+
+function refreshBlockBody(block) {
+    const bodyEl = document.getElementById(`block-body-${block.id}`);
+    if (!bodyEl) return;
+
+    let methodsHtml = '';
+    if (block.methods && block.methods.length > 0) {
+        methodsHtml = `
+            <div class="section-title">
+                <span>Methods</span>
+                <span class="add-btn" onclick="addMethod(${block.id})">+</span>
+            </div>
+        `;
+        block.methods.forEach((method, idx) => {
+            methodsHtml += renderMethodView(block.id, idx, method);
+        });
+    } else if (block.type !== 'method') {
+        methodsHtml = `
+            <div class="section-title">
+                <span>Methods</span>
+                <span class="add-btn" onclick="addMethod(${block.id})">+</span>
+            </div>
+        `;
+    }
+
+    let fieldsHtml = '';
+    if (block.fields && block.fields.length > 0) {
+        fieldsHtml = `
+            <div class="section-title">
+                <span>Fields</span>
+                <span class="add-btn" onclick="addField(${block.id})">+</span>
+            </div>
+        `;
+        block.fields.forEach((field, idx) => {
+            fieldsHtml += renderFieldView(block.id, idx, field);
+        });
+    } else if (block.type === 'struct') {
+        fieldsHtml = `
+            <div class="section-title">
+                <span>Fields</span>
+                <span class="add-btn" onclick="addField(${block.id})">+</span>
+            </div>
+        `;
+    }
+
+    bodyEl.innerHTML = fieldsHtml + methodsHtml;
+    attachSortListeners(block.id);
+}
+
 function renderMethodView(blockId, idx, method) {
     const fullSig = buildFullSignature(method);
     const sigString = methodToString(method);
 
     return `
-                <div class="method-row" id="method-row-${blockId}-${idx}">
+                <div class="method-row sortable-item" draggable="true" data-block-id="${blockId}" data-index="${idx}" data-type="method">
+                    <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
                     <div class="method-signature-display" id="method-view-${blockId}-${idx}">
                         <div class="method-full-signature">${fullSig}</div>
                         <div class="edit-actions">
@@ -613,6 +815,7 @@ function saveMethodEdit(blockId, idx) {
     const rowEl = document.getElementById(`method-row-${blockId}-${idx}`);
     if (rowEl) {
         rowEl.outerHTML = renderMethodView(blockId, idx, parsed);
+        attachSortListeners(blockId);
     }
 
     updateConnections();
@@ -626,6 +829,7 @@ function cancelMethodEdit(blockId, idx) {
     const rowEl = document.getElementById(`method-row-${blockId}-${idx}`);
     if (rowEl) {
         rowEl.outerHTML = renderMethodView(blockId, idx, method);
+        attachSortListeners(blockId);
     }
 }
 
@@ -763,7 +967,8 @@ function startDrag(e, blockId) {
         e.target.classList.contains('resize-handle') || e.target.closest('.color-picker-dropdown') ||
         e.target.classList.contains('color-picker-btn') || e.target.classList.contains('color-option') ||
         e.target.classList.contains('edit-btn') || e.target.closest('.edit-actions') ||
-        e.target.classList.contains('copy-btn')) {
+        e.target.classList.contains('copy-btn') || e.target.classList.contains('drag-handle') ||
+        e.target.classList.contains('sortable-item')) {
         return;
     }
     e.preventDefault();
@@ -895,7 +1100,7 @@ function addField(blockId) {
     const block = blocks.find(b => b.id === blockId);
     if (!block.fields) block.fields = [];
     block.fields.push({name: 'newField', type: 'string'});
-    refreshBlock(block);
+    refreshBlockBody(block);
     updateConnections();
     saveState();
 }
@@ -903,7 +1108,7 @@ function addField(blockId) {
 function removeField(blockId, idx) {
     const block = blocks.find(b => b.id === blockId);
     block.fields.splice(idx, 1);
-    refreshBlock(block);
+    refreshBlockBody(block);
     updateConnections();
     saveState();
 }
@@ -924,7 +1129,7 @@ function addMethod(blockId) {
     const block = blocks.find(b => b.id === blockId);
     if (!block.methods) block.methods = [];
     block.methods.push({name: 'NewMethod', params: [], returns: []});
-    refreshBlock(block);
+    refreshBlockBody(block);
     updateConnections();
     saveState();
 }
@@ -932,7 +1137,7 @@ function addMethod(blockId) {
 function removeMethod(blockId, idx) {
     const block = blocks.find(b => b.id === blockId);
     block.methods.splice(idx, 1);
-    refreshBlock(block);
+    refreshBlockBody(block);
     updateConnections();
     saveState();
 }
