@@ -97,9 +97,12 @@ body {
     box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     cursor: move;
     user-select: none;
-    transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s, border-color 0.2s;
 }
 .block:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.7); }
+.block.selected {
+    box-shadow: 0 0 0 3px rgba(88,166,255,0.4), 0 6px 20px rgba(0,0,0,0.7);
+}
 .block.interface { border-color: #58a6ff; }
 .block.struct { border-color: #3fb950; }
 .block.method { border-color: #d29922; }
@@ -155,8 +158,17 @@ body {
     font-size: 16px;
     padding: 2px 6px;
     border-radius: 4px;
+    transition: all 0.2s;
 }
 .block-actions button:hover { background: rgba(255,255,255,0.1); color: #f85149; }
+.block-actions .copy-btn {
+    font-size: 13px;
+    padding: 2px 5px;
+}
+.block-actions .copy-btn:hover {
+    color: #58a6ff;
+    background: rgba(88,166,255,0.1);
+}
 
 .block-body {
     padding: 10px 14px;

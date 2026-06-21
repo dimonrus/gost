@@ -11,6 +11,9 @@ let panStart = {x: 0, y: 0};
 let resizingBlock = null;
 let resizeStart = {x: 0, y: 0, w: 0, h: 0};
 
+// Selected block for copy operations
+let selectedBlockId = null;
+
 // Zoom state
 let zoom = 1.0;
 const MIN_ZOOM = 0.25;
@@ -265,6 +268,11 @@ document.addEventListener('keydown', (e) => {
         } else if ((e.key === 'y') || (e.key === 'z' && e.shiftKey)) {
             e.preventDefault();
             redo();
+        } else if (e.key === 'd') {
+            e.preventDefault();
+            if (selectedBlockId !== null) {
+                copyBlock(selectedBlockId);
+            }
         }
     }
 });
@@ -415,7 +423,8 @@ function renderBlock(block) {
                     <span style="color:#8b949e;font-size:10px;">${typeLabel}</span>
                     <div class="block-actions">
                         ${colorPickerHtml}
-                        <button onclick="deleteBlock(${block.id})">×</button>
+                        <button class="copy-btn" onclick="copyBlock(${block.id})" title="Copy block (Ctrl+D)">📋</button>
+                        <button onclick="deleteBlock(${block.id})" title="Delete block">×</button>
                     </div>
                 </div>
                 <div class="block-body" id="block-body-${block.id}">
@@ -426,7 +435,79 @@ function renderBlock(block) {
             `;
 
     el.addEventListener('mousedown', (e) => startDrag(e, block.id));
+
+    // Track selected block for copy operations
+    el.addEventListener('mousedown', (e) => {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'BUTTON' ||
+            e.target.classList.contains('add-btn') || e.target.classList.contains('remove-field') ||
+            e.target.classList.contains('resize-handle') || e.target.closest('.color-picker-dropdown') ||
+            e.target.classList.contains('color-picker-btn') || e.target.classList.contains('color-option') ||
+            e.target.classList.contains('edit-btn') || e.target.closest('.edit-actions') ||
+            e.target.classList.contains('copy-btn')) {
+            return;
+        }
+        selectBlock(block.id);
+    });
+
     canvas.appendChild(el);
+}
+
+function selectBlock(blockId) {
+    // Remove previous selection
+    document.querySelectorAll('.block').forEach(el => {
+        el.classList.remove('selected');
+    });
+
+    selectedBlockId = blockId;
+    const el = document.getElementById(`block-${blockId}`);
+    if (el) {
+        el.classList.add('selected');
+    }
+}
+
+function deselectBlock() {
+    selectedBlockId = null;
+    document.querySelectorAll('.block').forEach(el => {
+        el.classList.remove('selected');
+    });
+}
+
+// ============================================
+// COPY BLOCK
+// ============================================
+function copyBlock(blockId) {
+    const originalBlock = blocks.find(b => b.id === blockId);
+    if (!originalBlock) return;
+
+    // Deep clone the block data
+    const copiedBlock = JSON.parse(JSON.stringify(originalBlock));
+
+    // Assign new ID
+    copiedBlock.id = nextId++;
+
+    // Append "Copy" to the name without space
+    copiedBlock.name = originalBlock.name + 'Copy';
+
+    // Offset position slightly so it's visible
+    copiedBlock.x = originalBlock.x + 30;
+    copiedBlock.y = originalBlock.y + 30;
+
+    // Ensure position stays within canvas bounds
+    copiedBlock.x = Math.min(copiedBlock.x, 4800);
+    copiedBlock.y = Math.min(copiedBlock.y, 4800);
+
+    // Add to blocks array
+    blocks.push(copiedBlock);
+
+    // Render the new block
+    renderBlock(copiedBlock);
+
+    // Select the new block
+    selectBlock(copiedBlock.id);
+
+    // Update connections and save state
+    updateConnections();
+    saveState();
 }
 
 function renderMethodView(blockId, idx, method) {
@@ -585,6 +666,11 @@ document.addEventListener('click', (e) => {
     if (!e.target.closest('.color-picker-btn')) {
         document.querySelectorAll('.color-picker-dropdown').forEach(d => d.classList.remove('active'));
     }
+
+    // Deselect block when clicking on empty canvas area
+    if (e.target === canvasContainer || e.target === canvas) {
+        deselectBlock();
+    }
 });
 
 // ============================================
@@ -664,7 +750,8 @@ function startDrag(e, blockId) {
         e.target.classList.contains('add-btn') || e.target.classList.contains('remove-field') ||
         e.target.classList.contains('resize-handle') || e.target.closest('.color-picker-dropdown') ||
         e.target.classList.contains('color-picker-btn') || e.target.classList.contains('color-option') ||
-        e.target.classList.contains('edit-btn') || e.target.closest('.edit-actions')) {
+        e.target.classList.contains('edit-btn') || e.target.closest('.edit-actions') ||
+        e.target.classList.contains('copy-btn')) {
         return;
     }
     e.preventDefault();
@@ -1119,7 +1206,7 @@ function parseGoCode(code) {
         });
 
         const methods = [];
-        const methodRegex = new RegExp(`func\\s*\\(s\\s*\\*?${name}\\)\\s+(\\w+)\\s*\\((.*?)\\)\\s*(?:\\((.*?)\\)|(.*))?`, 'g');
+        const methodRegex = new RegExp(`func\s*\(s\s*\*?${name}\)\s+(\w+)\s*\((.*?)\)\s*(?:\((.*?)\)|(.*))?`, 'g');
         let mMatch;
         while ((mMatch = methodRegex.exec(code)) !== null) {
             const mName = mMatch[1];
