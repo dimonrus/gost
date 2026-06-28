@@ -471,8 +471,8 @@ function renderBlock(block) {
 
 function renderFieldView(blockId, idx, field) {
     return `
-        <div class="field-row sortable-item" draggable="true" data-block-id="${blockId}" data-index="${idx}" data-type="field">
-            <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
+        <div class="field-row sortable-item" data-block-id="${blockId}" data-index="${idx}" data-type="field">
+            <span class="drag-handle" draggable="true" title="Drag to reorder">⋮⋮</span>
             <input class="field-name" value="${escapeHtml(field.name)}" 
                 onchange="updateFieldName(${blockId}, ${idx}, this.value)">
             <input class="field-type" value="${escapeHtml(field.type)}" 
@@ -583,10 +583,16 @@ function attachSortListeners(blockId) {
     const blockBody = document.getElementById(`block-body-${blockId}`);
     if (!blockBody) return;
 
+    // Drag events only on drag handles
+    const dragHandles = blockBody.querySelectorAll('.drag-handle');
+    dragHandles.forEach(handle => {
+        handle.addEventListener('dragstart', handleSortDragStart);
+        handle.addEventListener('dragend', handleSortDragEnd);
+    });
+
+    // Drop events on sortable items (rows)
     const sortables = blockBody.querySelectorAll('.sortable-item');
     sortables.forEach(item => {
-        item.addEventListener('dragstart', handleSortDragStart);
-        item.addEventListener('dragend', handleSortDragEnd);
         item.addEventListener('dragover', handleSortDragOver);
         item.addEventListener('drop', handleSortDrop);
         item.addEventListener('dragenter', handleSortDragEnter);
@@ -596,12 +602,16 @@ function attachSortListeners(blockId) {
 
 function handleSortDragStart(e) {
     e.stopPropagation();
-    draggedSortItem = this;
-    draggedSortType = this.dataset.type;
-    draggedSortBlockId = parseInt(this.dataset.blockId);
-    draggedSortIndex = parseInt(this.dataset.index);
+    // 'this' is the drag handle, find the parent sortable-item
+    const sortableItem = this.closest('.sortable-item');
+    if (!sortableItem) return;
 
-    this.classList.add('dragging');
+    draggedSortItem = sortableItem;
+    draggedSortType = sortableItem.dataset.type;
+    draggedSortBlockId = parseInt(sortableItem.dataset.blockId);
+    draggedSortIndex = parseInt(sortableItem.dataset.index);
+
+    sortableItem.classList.add('dragging');
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', '');
 
@@ -611,7 +621,10 @@ function handleSortDragStart(e) {
 
 function handleSortDragEnd(e) {
     e.stopPropagation();
-    this.classList.remove('dragging');
+    const sortableItem = this.closest('.sortable-item');
+    if (sortableItem) {
+        sortableItem.classList.remove('dragging');
+    }
 
     // Remove all drop indicators
     document.querySelectorAll('.sortable-item').forEach(item => {
@@ -776,8 +789,8 @@ function renderMethodView(blockId, idx, method) {
     const sigString = methodToString(method);
 
     return `
-                <div class="method-row sortable-item" draggable="true" data-block-id="${blockId}" data-index="${idx}" data-type="method">
-                    <span class="drag-handle" title="Drag to reorder">⋮⋮</span>
+                <div class="method-row sortable-item" id="method-row-${blockId}-${idx}" data-block-id="${blockId}" data-index="${idx}" data-type="method">
+                    <span class="drag-handle" draggable="true" title="Drag to reorder">⋮⋮</span>
                     <div class="method-signature-display" id="method-view-${blockId}-${idx}">
                         <div class="method-full-signature">${fullSig}</div>
                         <div class="edit-actions">
@@ -818,12 +831,14 @@ function buildFullSignature(method) {
     html += `<span class="method-paren">)</span>`;
     if (method.returns.length > 0) {
         html += ' ';
-        if (method.returns.length > 1) html += '<span class="method-paren">(</span>';
+        // Go requires parens when >1 return OR when any return is named (contains space)
+        const needsParens = method.returns.length > 1 || method.returns.some(r => r.includes(' '));
+        if (needsParens) html += '<span class="method-paren">(</span>';
         method.returns.forEach((r, i) => {
             if (i > 0) html += '<span class="method-comma">, </span>';
             html += `<span class="method-return">${escapeHtml(r)}</span>`;
         });
-        if (method.returns.length > 1) html += '<span class="method-paren">)</span>';
+        if (needsParens) html += '<span class="method-paren">)</span>';
     }
     return html;
 }
@@ -832,7 +847,14 @@ function methodToString(method) {
     const params = method.params.map(p => p.name + ' ' + p.type).join(', ');
     const returns = method.returns.join(', ');
     let s = `${method.name}(${params})`;
-    if (returns) s += ` (${returns})`;
+    if (returns) {
+        const needsParens = method.returns.length > 1 || method.returns.some(r => r.includes(' '));
+        if (needsParens) {
+            s += ` (${returns})`;
+        } else {
+            s += ` ${returns}`;
+        }
+    }
     return s;
 }
 

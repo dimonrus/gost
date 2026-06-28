@@ -511,14 +511,11 @@ body {
 
 
 /* ===== DRAG-AND-DROP SORTING ===== */
+/* Sortable items are no longer draggable directly */
 .sortable-item {
-    cursor: grab;
+    cursor: default;
     position: relative;
     transition: background 0.15s, transform 0.15s;
-}
-
-.sortable-item:active {
-    cursor: grabbing;
 }
 
 .drag-handle {
@@ -539,6 +536,21 @@ body {
 .drag-handle:hover {
     color: #8b949e;
     background: rgba(255,255,255,0.05);
+}
+
+.drag-handle[draggable="true"] {
+    cursor: grab;
+}
+
+.drag-handle[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+/* Sortable items are no longer draggable directly */
+.sortable-item {
+    cursor: default;
+    position: relative;
+    transition: background 0.15s, transform 0.15s;
 }
 
 .sortable-item:hover .drag-handle {
