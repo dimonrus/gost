@@ -375,10 +375,6 @@ function renderBlock(block) {
     const colorPickerHtml = `
                 <div class="color-picker-btn" style="background:${block.color || DEFAULT_COLORS[block.type]}" 
                      onclick="toggleColorPicker(event, ${block.id})" data-block-id="${block.id}">
-                    <div class="color-picker-dropdown" id="color-picker-${block.id}">
-                        ${COLOR_PALETTE.map(c => `<div class="color-option ${c === (block.color || DEFAULT_COLORS[block.type]) ? 'selected' : ''}" 
-                            style="background:${c}" onclick="setBlockColor(${block.id}, '${c}')"></div>`).join('')}
-                    </div>
                 </div>
             `;
 
@@ -931,10 +927,45 @@ function hexToRgb(hex) {
 // ============================================
 function toggleColorPicker(event, blockId) {
     event.stopPropagation();
-    const dropdown = document.getElementById(`color-picker-${blockId}`);
-    const isActive = dropdown.classList.contains('active');
-    document.querySelectorAll('.color-picker-dropdown').forEach(d => d.classList.remove('active'));
-    if (!isActive) dropdown.classList.add('active');
+
+    // Close any existing dropdown
+    const existing = document.getElementById('global-color-picker');
+    if (existing) {
+        existing.remove();
+        // If clicking the same block's button, just close (toggle behavior)
+        if (existing.dataset.blockId == blockId) return;
+    }
+
+    const block = blocks.find(b => b.id === blockId);
+    if (!block) return;
+
+    const btn = event.currentTarget;
+    const btnRect = btn.getBoundingClientRect();
+    const canvasRect = canvas.getBoundingClientRect();
+
+    // Calculate position relative to canvas
+    const left = (btnRect.left - canvasRect.left) / zoom;
+    const top = (btnRect.bottom - canvasRect.top + 4) / zoom;
+
+    // Create dropdown as child of canvas
+    const dropdown = document.createElement('div');
+    dropdown.className = 'color-picker-dropdown active';
+    dropdown.id = 'global-color-picker';
+    dropdown.dataset.blockId = blockId;
+    dropdown.style.position = 'absolute';
+    dropdown.style.width = 150 + 'px';
+    dropdown.style.left = left + 'px';
+    dropdown.style.top = top + 'px';
+    dropdown.style.zIndex = '9999';
+    dropdown.style.display = 'grid';
+
+    const currentColor = block.color || DEFAULT_COLORS[block.type];
+    dropdown.innerHTML = COLOR_PALETTE.map(c => 
+        `<div class="color-option ${c === currentColor ? 'selected' : ''}" 
+            style="background:${c}" onclick="setBlockColor(${block.id}, '${c}')"></div>`
+    ).join('');
+
+    canvas.appendChild(dropdown);
 }
 
 function setBlockColor(blockId, color) {
@@ -945,12 +976,14 @@ function setBlockColor(blockId, color) {
         updateConnections();
         saveState();
     }
-    document.querySelectorAll('.color-picker-dropdown').forEach(d => d.classList.remove('active'));
+    const existing = document.getElementById('global-color-picker');
+    if (existing) existing.remove();
 }
 
 document.addEventListener('click', (e) => {
-    if (!e.target.closest('.color-picker-btn')) {
-        document.querySelectorAll('.color-picker-dropdown').forEach(d => d.classList.remove('active'));
+    if (!e.target.closest('.color-picker-btn') && !e.target.closest('.color-picker-dropdown')) {
+        const existing = document.getElementById('global-color-picker');
+        if (existing) existing.remove();
     }
 
     // Deselect block when clicking on empty canvas area
@@ -1183,7 +1216,7 @@ function deleteBlock(id) {
 function addField(blockId) {
     const block = blocks.find(b => b.id === blockId);
     if (!block.fields) block.fields = [];
-    block.fields.push({name: 'newField', type: 'string'});
+    block.fields.push({name: 'newField', type: '*string'});
     refreshBlockBody(block);
     updateConnections();
     saveState();
