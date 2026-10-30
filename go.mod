@@ -14,12 +14,12 @@ require (
 	github.com/dimonrus/porterr v1.13.2
 	github.com/gorilla/mux v1.8.1
 	github.com/lib/pq v1.10.9
-	github.com/rabbitmq/amqp091-go v1.15.0
+	github.com/rabbitmq/amqp091-go v1.16.0
 )
 
 require (
 	github.com/dimonrus/gosql v0.9.5 // indirect
-	golang.org/x/net v0.59.0 // indirect
-	golang.org/x/text v0.42.0 // indirect
+	golang.org/x/net v0.62.0 // indirect
+	golang.org/x/text v0.43.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
